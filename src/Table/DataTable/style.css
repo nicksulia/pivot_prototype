@@ -1,0 +1,8 @@
+.data-table {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+.data-table-container {
+    position: absolute;
+}

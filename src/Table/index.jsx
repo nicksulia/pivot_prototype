@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import DataTable from './DataTable';
+import './style.css';
 
 const mockDataUrl = '/mockData/data.json';
 const  headers = {
@@ -11,15 +12,18 @@ const myInit = {
     method: 'GET',
     headers
 }
+const elementHeight = 20;
 
 class Table extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
             minIndex: 0,
-            maxIndex: 4,
+            maxIndex: 50,
             data: [],
-            dataLength: 0
+            dataLength: 0,
+            containerHeight: 0,
+            top: 0
         }
     }
     componentDidMount(){
@@ -27,7 +31,7 @@ class Table extends PureComponent {
         fetch(mockDataUrl, myInit)
             .then((response) => response.json())
             .then(data => {
-                this.setState({data, dataLength: data.length});
+                this.setState({data, dataLength: data.length, containerHeight: data.length * elementHeight});
             });
     }
     componentWillUnmount(){
@@ -40,27 +44,29 @@ class Table extends PureComponent {
     }
     handleScroll = () => {
         const scrollTop = (this.table && this.table.scrollTop) || this.table.scrollTop;
-        const scrollHeight = (this.table && this.table.scrollHeight) || this.table.scrollHeight;
+        //const scrollHeight = (this.table && this.table.scrollHeight) || this.table.scrollHeight;
         const clientHeight = this.table.clientHeight || this.table.innerHeight;
-        const scrolledToBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
-
-        if (scrolledToBottom) {
+        const scrolledToBottomVirtual = Math.ceil(scrollTop) >= this.state.top +  50 * elementHeight - clientHeight;
+        console.log('scrollTop: ' + scrollTop,
+            'Elements position: ' + (this.state.top +  50 * elementHeight));
+        if (scrolledToBottomVirtual) {
             this.setNextIndexes()
         }
     }
     setNextIndexes = () => {
-        const { minIndex, maxIndex, dataLength } = this.state;
+        const { minIndex, maxIndex, dataLength, top } = this.state;
         if (maxIndex + 1 < dataLength) {
             this.setState({
-                minIndex: minIndex + 1,
-                maxIndex: maxIndex + 1,
+                top: top + 10 * elementHeight,
+                minIndex: minIndex + 10,
+                maxIndex: maxIndex + 10,
             });
         }
     }
     render() {
         return (
             <div ref = {this.setRef} className="table">
-                <DataTable {...this.state}/>
+                <DataTable {...this.state} />
             </div>
         );
     }

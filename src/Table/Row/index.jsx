@@ -1,14 +1,18 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import Cell from '../Cell';
+import './style.css';
 
-class Row extends PureComponent {
+class Row extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            style: {
+                width: props.elements ? props.elements.length * 100 : 0
+            },
             isChanged: false
         };
         if (props.elements && props.elements.length) {
-            this.elements = this.renderElements(props.elements)
+            this.elements = this.renderElements(props.elements);
         }
     }
     componentWillReceiveProps(nextProps) {
@@ -17,6 +21,8 @@ class Row extends PureComponent {
             this.setState({
                 isChanged: true
             })
+        } else {
+            this.elements = [];
         }
     }
     shouldComponentUpdate(nextProps, nextState) {
@@ -38,7 +44,7 @@ class Row extends PureComponent {
     };
     render() {
         return (
-            <div className="row">
+            <div className="row" style={this.state.style}>
                 {this.elements}
             </div>
         );

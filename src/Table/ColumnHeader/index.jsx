@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
 
-class HeaderTable extends PureComponent {
+class ColumnHeader extends PureComponent {
     render() {
         return (
-            <div className="header-table">
+            <div className="column-header">
             </div>
         );
     }
 }
 
-export default HeaderTable;
+export default ColumnHeader;
