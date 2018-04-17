@@ -7,6 +7,7 @@ class DataTable extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
+            step: props.step,
             style:{
                 minHeight: props.containerHeight,
             },
@@ -16,7 +17,7 @@ class DataTable extends PureComponent {
             isChanged: false,
             prevRenderedRows: [],
             data: props.data,
-            renderedRows: props.data.length > 50 ? props.data.slice(0,50).map(this.renderRow) : props.data.map(this.renderRow)
+            renderedRows: props.data.length > 50 ? props.data.slice(0,49).map(this.renderRow) : props.data.map(this.renderRow)
         };
     }
     componentWillReceiveProps(nextProps) {
@@ -35,9 +36,9 @@ class DataTable extends PureComponent {
                 data: nextProps.data
             });
         } else if (nextProps.maxIndex > this.props.maxIndex && nextProps.maxIndex < nextProps.dataLength) {
-            let prevRenderedRows = this.state.renderedRows.slice(0, 10);
+            let prevRenderedRows = this.state.renderedRows.slice(0, nextProps.step - 1);
             prevRenderedRows = this.state.prevRenderedRows.concat(prevRenderedRows);
-            const remainingRows = this.state.renderedRows.slice(10, 50);
+            const remainingRows = this.state.renderedRows.slice(nextProps.step - 1, 49);
             const newRow = this.renderNewRows(this.state.data.slice(this.props.maxIndex, nextProps.maxIndex), this.props.maxIndex);
             const renderedRows = remainingRows.concat(newRow);
             this.setState({

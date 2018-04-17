@@ -13,13 +13,14 @@ const myInit = {
     headers
 }
 const elementHeight = 20;
-
 class Table extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
+            displayedElementsCount: 50,
+            step: 10,
             minIndex: 0,
-            maxIndex: 50,
+            maxIndex: 49,
             data: [],
             dataLength: 0,
             containerHeight: 0,
@@ -43,23 +44,27 @@ class Table extends PureComponent {
         }
     }
     handleScroll = () => {
+        const { top, displayedElementsCount } = this.state;
         const scrollTop = (this.table && this.table.scrollTop) || this.table.scrollTop;
-        //const scrollHeight = (this.table && this.table.scrollHeight) || this.table.scrollHeight;
         const clientHeight = this.table.clientHeight || this.table.innerHeight;
-        const scrolledToBottomVirtual = Math.ceil(scrollTop) >= this.state.top +  50 * elementHeight - clientHeight;
+        const elementsPosition = top +  displayedElementsCount * elementHeight - clientHeight;
+        const scrolledToBottomVirtual = Math.ceil(scrollTop) >= elementsPosition;
         console.log('scrollTop: ' + scrollTop,
-            'Elements position: ' + (this.state.top +  50 * elementHeight));
+            'Elements position: ' + (elementsPosition));
         if (scrolledToBottomVirtual) {
-            this.setNextIndexes()
+            const scrollToElementsCount = Math.ceil((scrollTop - elementsPosition)/elementHeight);
+            this.setNextIndexes(scrollToElementsCount)
         }
     }
-    setNextIndexes = () => {
-        const { minIndex, maxIndex, dataLength, top } = this.state;
+    setNextIndexes = (customStep) => {
+        const { minIndex, maxIndex, dataLength, top, step } = this.state;
+        const elementsPerStep = customStep || step;
         if (maxIndex + 1 < dataLength) {
             this.setState({
-                top: top + 10 * elementHeight,
-                minIndex: minIndex + 10,
-                maxIndex: maxIndex + 10,
+                step: elementsPerStep,
+                top: top + elementsPerStep * elementHeight,
+                minIndex: minIndex + elementsPerStep,
+                maxIndex: maxIndex + elementsPerStep,
             });
         }
     }
