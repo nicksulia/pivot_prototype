@@ -1,12 +1,17 @@
 import React, { PureComponent } from 'react';
 import Row from '../Row';
 import './style.css';
-
+import SideContainer from './SideContainer'
+import sideDataRender from './sidePanelDataRender.js';
 
 class DataTable extends PureComponent {
+
+    sidePanelData = new Array(500).map((el, index) => [ 'row-header-' + index ]);
+
     constructor(props) {
         super(props);
         this.state = {
+            sideData: sideDataRender(props.data.length),
             step: props.step,
             style:{
                 minHeight: props.containerHeight,
@@ -33,12 +38,14 @@ class DataTable extends PureComponent {
                     nextProps.data.slice(nextProps.minIndex, nextProps.maxIndex).map(this.renderRow)
                     :
                     nextProps.data.map(this.renderRow),
-                data: nextProps.data
+                sideData: sideDataRender(nextProps.data.length),
+                data: nextProps.data,
+                step: nextProps.step
             });
         } else if (nextProps.maxIndex > this.props.maxIndex && nextProps.maxIndex < nextProps.dataLength) {
-            let prevRenderedRows = this.state.renderedRows.slice(0, nextProps.step - 1);
+            let prevRenderedRows = this.state.renderedRows.slice(0, 10 - 1);
             prevRenderedRows = this.state.prevRenderedRows.concat(prevRenderedRows);
-            const remainingRows = this.state.renderedRows.slice(nextProps.step - 1, 49);
+            const remainingRows = this.state.renderedRows.slice(10 - 1, 49);
             const newRow = this.renderNewRows(this.state.data.slice(this.props.maxIndex, nextProps.maxIndex), this.props.maxIndex);
             const renderedRows = remainingRows.concat(newRow);
             this.setState({
@@ -49,7 +56,8 @@ class DataTable extends PureComponent {
                     top: nextProps.top
                 },
                 prevRenderedRows,
-                renderedRows
+                renderedRows,
+                step: nextProps.step
             })
         }
     }
@@ -60,8 +68,11 @@ class DataTable extends PureComponent {
         return rows.map((row, index) => (<Row elements = {row} key = {`row-${index + currIndex}`} />))
     }
     render() {
+        const { minIndex, maxIndex } = this.props;
+        const { elContainerStyle } = this.state;
         return (
             <div className="data-table" style = {this.state.style}>
+                <SideContainer elContainerStyle={elContainerStyle} minIndex={minIndex} maxIndex={maxIndex} data={this.state.sideData}/>
                 <div className="data-table-container" style={this.state.elContainerStyle}>
                     {this.state.renderedRows}
                 </div>
