@@ -24,7 +24,8 @@ class Table extends PureComponent {
             data: [],
             dataLength: 0,
             containerHeight: 0,
-            top: 0
+            top: 0,
+            left: 0
         }
     }
     componentDidMount(){
@@ -44,6 +45,11 @@ class Table extends PureComponent {
         }
     }
     handleScroll = () => {
+        if (this.table && this.state.left !== this.table.scrollLeft) {
+            this.setState({
+                left: this.table.scrollLeft
+            });
+        }
         const { top, displayedElementsCount } = this.state;
         const scrollTop = (this.table && this.table.scrollTop) || this.table.scrollTop;
         const clientHeight = this.table.clientHeight || this.table.innerHeight;

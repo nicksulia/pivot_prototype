@@ -1,4 +1,6 @@
 .side-table-container {
     position: absolute;
     left: 0;
+    z-index: 2;
+    background-color: #FFF;
 }

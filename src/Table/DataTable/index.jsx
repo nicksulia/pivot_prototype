@@ -68,11 +68,11 @@ class DataTable extends PureComponent {
         return rows.map((row, index) => (<Row elements = {row} key = {`row-${index + currIndex}`} />))
     }
     render() {
-        const { minIndex, maxIndex } = this.props;
+        const { minIndex, maxIndex, left } = this.props;
         const { elContainerStyle } = this.state;
         return (
             <div className="data-table" style = {this.state.style}>
-                <SideContainer elContainerStyle={elContainerStyle} minIndex={minIndex} maxIndex={maxIndex} data={this.state.sideData}/>
+                <SideContainer elContainerStyle={Object.assign({},{left}, elContainerStyle)} minIndex={minIndex} maxIndex={maxIndex} data={this.state.sideData}/>
                 <div className="data-table-container" style={this.state.elContainerStyle}>
                     {this.state.renderedRows}
                 </div>
