@@ -10,7 +10,6 @@ class DataTable extends PureComponent {
         super(props);
         this.state = {
             sideData: sideDataRender(props.data.length),
-            step: props.step,
             containerStyle: {
                 minHeight: props.containerHeight,
             },
@@ -67,12 +66,11 @@ class DataTable extends PureComponent {
                 marginLeft: nextProps.left
             },
             renderedRows,
-            step: nextProps.step
         })
     }
 
     setNewState = (nextProps) => {
-        const { containerHeight, displayedElementsCount, data, top, step } = nextProps;
+        const { containerHeight, displayedElementsCount, data, top } = nextProps;
         this.setState({
             containerStyle:{
                 minHeight: containerHeight,
@@ -85,8 +83,7 @@ class DataTable extends PureComponent {
                 :
                 this.renderRows(nextProps, 0, data.length),
             sideData: sideDataRender(data.length),
-            data,
-            step
+            data
         });
     }
 
@@ -99,7 +96,7 @@ class DataTable extends PureComponent {
     }
 
     render() {
-        const { minIndex, maxIndex, left, displayedElementsCount } = this.props;
+        const { minIndex, maxIndex, displayedElementsCount } = this.props;
         const { elContainerStyle, sidePanelStyle, containerStyle, sideData } = this.state;
         return (
             <div className="data-table" style = {containerStyle}>

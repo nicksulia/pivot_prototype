@@ -29,7 +29,7 @@ class Table extends PureComponent {
         }
     }
     componentDidMount(){
-        this.table.addEventListener('scroll', this.handleScroll);
+        //this.table.addEventListener('scroll', this.handleScroll);
         fetch(mockDataUrl, myInit)
             .then((response) => response.json())
             .then(data => {
@@ -37,7 +37,7 @@ class Table extends PureComponent {
             });
     }
     componentWillUnmount(){
-        this.table.removeEventListener('scroll', this.handleScroll);
+        //this.table.removeEventListener('scroll', this.handleScroll);
     }
     setRef = (el) => {
         if (el) {
@@ -45,13 +45,17 @@ class Table extends PureComponent {
         }
     }
     handleScroll = () => {
-        if (this.table && this.state.left !== this.table.scrollLeft) {
+        if (this.state.left !== this.table.scrollLeft) {
             this.handleHorizontalScroll();
         } else {
             this.handleVerticalScroll();
         }
 
     }
+    componentDidUpdate() {
+        console.log();
+    }
+
     handleHorizontalScroll = () => {
         this.setState({
             left: this.table.scrollLeft
@@ -71,18 +75,16 @@ class Table extends PureComponent {
         }
     }
     setNextIndexes = (customStep) => {
-        const { minIndex, maxIndex, dataLength, top, step, displayedElementsCount } = this.state;
-        const elementsPerStep = customStep || step;
+        const { maxIndex, dataLength, top, step, displayedElementsCount } = this.state;
+        const elementsPerStep = customStep && customStep > step ? customStep : step;
         if (maxIndex + elementsPerStep < dataLength) {
             this.setState({
-                step: elementsPerStep,
                 top: top + elementsPerStep * elementHeight,
                 minIndex: maxIndex + elementsPerStep - displayedElementsCount,
                 maxIndex: maxIndex + elementsPerStep,
             });
         } else if (maxIndex < dataLength && dataLength - maxIndex < displayedElementsCount) {
             this.setState({
-                step: dataLength - maxIndex,
                 top: top + (dataLength - maxIndex) * elementHeight,
                 minIndex: dataLength - displayedElementsCount,
                 maxIndex: dataLength,
@@ -91,7 +93,7 @@ class Table extends PureComponent {
     }
     render() {
         return (
-            <div ref = {this.setRef} className="table">
+            <div ref = {this.setRef} className="table" onScroll={this.handleScroll}>
                 <DataTable {...this.state} />
             </div>
         );
