@@ -22,7 +22,7 @@ class DataTable extends PureComponent {
                 marginLeft: props.left
             },
             data: props.data,
-            renderedRows: props.data.length > props.displayedElementsCount ? this.renderRows(props, 0, props.displayedElementsCount) : this.renderRows(props, 0, props.data.length - 1)
+            renderedRows: props.data.length > props.displayedElementsCount ? this.renderRows(props, 0, props.displayedElementsCount - 1) : this.renderRows(props, 0, props.data.length - 1)
         };
     }
     componentWillReceiveProps(nextProps) {
@@ -35,17 +35,17 @@ class DataTable extends PureComponent {
                     top: nextProps.top
                 },
                 renderedRows: nextProps.data.length > nextProps.displayedElementsCount ?
-                    nextProps.data.slice(nextProps.minIndex, nextProps.maxIndex).map(this.renderRow)
+                    this.renderRows(nextProps, 0, nextProps.displayedElementsCount)
                     :
-                    nextProps.data.map(this.renderRow),
+                    this.renderRows(nextProps, 0, nextProps.data.length),
                 sideData: sideDataRender(nextProps.data.length),
                 data: nextProps.data,
                 step: nextProps.step
             });
-        } else if (nextProps.maxIndex > this.props.maxIndex && nextProps.maxIndex <= nextProps.dataLength - 1) {
+        } else if (nextProps.maxIndex > this.props.maxIndex && nextProps.maxIndex <= nextProps.dataLength) {
             let renderedRows;
             if(nextProps.maxIndex - this.props.maxIndex < nextProps.displayedElementsCount) {
-                const remainingRows = this.state.renderedRows.slice(nextProps.maxIndex - this.props.maxIndex, nextProps.displayedElementsCount - 1);
+                const remainingRows = this.state.renderedRows.slice(nextProps.maxIndex - this.props.maxIndex, nextProps.displayedElementsCount);
                 const newRows = this.renderNewRows(
                     nextProps.data.slice(this.props.maxIndex, nextProps.maxIndex),
                     this.props.maxIndex

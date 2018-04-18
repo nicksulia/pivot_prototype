@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="29bd8029-1924-4034-a952-8e08bc7a276d" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/generateData.js" afterPath="$PROJECT_DIR$/generateData.js" />
-      <change beforePath="$PROJECT_DIR$/public/mockData/data.json" afterPath="$PROJECT_DIR$/public/mockData/data.json" />
-      <change beforePath="$PROJECT_DIR$/src/Table/DataTable/SideContainer/index.jsx" afterPath="$PROJECT_DIR$/src/Table/DataTable/SideContainer/index.jsx" />
-      <change beforePath="$PROJECT_DIR$/src/Table/DataTable/SideContainer/style.css" afterPath="$PROJECT_DIR$/src/Table/DataTable/SideContainer/style.css" />
+      <change beforePath="$PROJECT_DIR$/src/Table/Cell/style.css" afterPath="$PROJECT_DIR$/src/Table/Cell/style.css" />
       <change beforePath="$PROJECT_DIR$/src/Table/DataTable/index.jsx" afterPath="$PROJECT_DIR$/src/Table/DataTable/index.jsx" />
       <change beforePath="$PROJECT_DIR$/src/Table/index.jsx" afterPath="$PROJECT_DIR$/src/Table/index.jsx" />
     </list>
@@ -21,18 +18,18 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="index.jsx" pinned="false" current-in-tab="false">
+      <file leaf-file-name="index.jsx" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Table/DataTable/index.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-428">
-              <caret line="46" column="93" lean-forward="true" selection-start-line="46" selection-start-column="93" selection-end-line="46" selection-end-column="93" />
+            <state relative-caret-position="-656">
+              <caret line="39" column="71" lean-forward="false" selection-start-line="39" selection-start-column="71" selection-end-line="39" selection-end-column="71" />
               <folding>
                 <element signature="e#0#45#0" expanded="true" />
-                <marker date="1524042170501" expanded="true" signature="3585:3601" ph="..." />
-                <marker date="1524042170501" expanded="true" signature="3601:3887" ph="..." />
-                <marker date="1524042170501" expanded="true" signature="3716:3881" ph="..." />
-                <marker date="1524042170501" expanded="true" signature="3781:3799" ph="..." />
-                <marker date="1524042170501" expanded="true" signature="3799:3868" ph="..." />
+                <marker date="1524048303328" expanded="true" signature="3582:3598" ph="..." />
+                <marker date="1524048303328" expanded="true" signature="3598:3884" ph="..." />
+                <marker date="1524048303328" expanded="true" signature="3713:3878" ph="..." />
+                <marker date="1524048303328" expanded="true" signature="3778:3796" ph="..." />
+                <marker date="1524048303328" expanded="true" signature="3796:3865" ph="..." />
               </folding>
             </state>
           </provider>
@@ -61,8 +58,8 @@
       <file leaf-file-name="index.jsx" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Table/index.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="412">
-              <caret line="80" column="15" lean-forward="true" selection-start-line="80" selection-start-column="15" selection-end-line="80" selection-end-column="15" />
+            <state relative-caret-position="1420">
+              <caret line="71" column="77" lean-forward="false" selection-start-line="71" selection-start-column="77" selection-end-line="71" selection-end-column="77" />
               <folding>
                 <element signature="e#0#45#0" expanded="true" />
               </folding>
@@ -82,24 +79,22 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="generateData.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="generateData.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/generateData.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="567">
-              <caret line="27" column="37" lean-forward="true" selection-start-line="27" selection-start-column="37" selection-end-line="27" selection-end-column="37" />
+            <state relative-caret-position="546">
+              <caret line="26" column="21" lean-forward="false" selection-start-line="26" selection-start-column="21" selection-end-line="26" selection-end-column="21" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.jsx" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Table/Row/index.jsx">
+      <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Table/Cell/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="535">
-              <caret line="39" column="53" lean-forward="false" selection-start-line="39" selection-start-column="48" selection-end-line="39" selection-end-column="53" />
-              <folding>
-                <element signature="e#0#41#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="105">
+              <caret line="5" column="27" lean-forward="false" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="27" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -128,7 +123,7 @@
         <entry file="file://$PROJECT_DIR$/src/Table/Cell/index.jsx">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="189">
-              <caret line="9" column="21" lean-forward="false" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="21" />
+              <caret line="9" column="22" lean-forward="true" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="22" />
               <folding>
                 <element signature="e#0#45#0" expanded="true" />
               </folding>
@@ -155,6 +150,10 @@
       <find>curr</find>
       <find>style</find>
       <find>renderRows</find>
+      <find>maxIndex</find>
+      <find>displayedElementsCount</find>
+      <find>slice</find>
+      <find>else</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -172,7 +171,6 @@
         <option value="$PROJECT_DIR$/src/Table/Cell/index.jsx" />
         <option value="$PROJECT_DIR$/src/Table/Row/index.jsx" />
         <option value="$PROJECT_DIR$/src/App.js" />
-        <option value="$PROJECT_DIR$/src/Table/Cell/style.css" />
         <option value="$PROJECT_DIR$/src/Table/style.css" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/Table/DataTable/SideContainer/sidePanelDataFiller.js" />
@@ -180,9 +178,10 @@
         <option value="$PROJECT_DIR$/src/Table/DataTable/style.css" />
         <option value="$PROJECT_DIR$/src/Table/DataTable/SideContainer/style.css" />
         <option value="$PROJECT_DIR$/src/Table/DataTable/SideContainer/index.jsx" />
+        <option value="$PROJECT_DIR$/generateData.js" />
+        <option value="$PROJECT_DIR$/src/Table/Cell/style.css" />
         <option value="$PROJECT_DIR$/src/Table/index.jsx" />
         <option value="$PROJECT_DIR$/src/Table/DataTable/index.jsx" />
-        <option value="$PROJECT_DIR$/generateData.js" />
       </list>
     </option>
   </component>
@@ -239,6 +238,35 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="Table" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="pivot_prototype_v1.1" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pivot_prototype_v1.1" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Table" type="462c0819:PsiDirectoryNode" />
+              <item name="Cell" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="pivot_prototype_v1.1" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pivot_prototype_v1.1" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Table" type="462c0819:PsiDirectoryNode" />
+              <item name="DataTable" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="pivot_prototype_v1.1" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pivot_prototype_v1.1" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Table" type="462c0819:PsiDirectoryNode" />
+              <item name="DataTable" type="462c0819:PsiDirectoryNode" />
+              <item name="SideContainer" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="pivot_prototype_v1.1" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pivot_prototype_v1.1" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Table" type="462c0819:PsiDirectoryNode" />
+              <item name="HeaderTable" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -292,17 +320,18 @@
       <updated>1522834990103</updated>
       <workItem from="1522834991365" duration="2195000" />
       <workItem from="1523881640657" duration="2905000" />
-      <workItem from="1523951260877" duration="19666000" />
+      <workItem from="1523951260877" duration="23081000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="51112000" />
+    <option name="totallyTimeSpent" value="54527000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3125" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3125" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -341,11 +370,11 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#45#0" expanded="true" />
-            <marker date="1524042170501" expanded="true" signature="3585:3601" ph="..." />
-            <marker date="1524042170501" expanded="true" signature="3601:3887" ph="..." />
-            <marker date="1524042170501" expanded="true" signature="3716:3881" ph="..." />
-            <marker date="1524042170501" expanded="true" signature="3781:3799" ph="..." />
-            <marker date="1524042170501" expanded="true" signature="3799:3868" ph="..." />
+            <marker date="1524048303328" expanded="true" signature="3582:3598" ph="..." />
+            <marker date="1524048303328" expanded="true" signature="3598:3884" ph="..." />
+            <marker date="1524048303328" expanded="true" signature="3713:3878" ph="..." />
+            <marker date="1524048303328" expanded="true" signature="3778:3796" ph="..." />
+            <marker date="1524048303328" expanded="true" signature="3796:3865" ph="..." />
           </folding>
         </state>
       </provider>
@@ -428,11 +457,11 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#45#0" expanded="true" />
-            <marker date="1524042170501" expanded="true" signature="3585:3601" ph="..." />
-            <marker date="1524042170501" expanded="true" signature="3601:3887" ph="..." />
-            <marker date="1524042170501" expanded="true" signature="3716:3881" ph="..." />
-            <marker date="1524042170501" expanded="true" signature="3781:3799" ph="..." />
-            <marker date="1524042170501" expanded="true" signature="3799:3868" ph="..." />
+            <marker date="1524048303328" expanded="true" signature="3582:3598" ph="..." />
+            <marker date="1524048303328" expanded="true" signature="3598:3884" ph="..." />
+            <marker date="1524048303328" expanded="true" signature="3713:3878" ph="..." />
+            <marker date="1524048303328" expanded="true" signature="3778:3796" ph="..." />
+            <marker date="1524048303328" expanded="true" signature="3796:3865" ph="..." />
           </folding>
         </state>
       </provider>
@@ -523,11 +552,11 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#45#0" expanded="true" />
-            <marker date="1524042170501" expanded="true" signature="3585:3601" ph="..." />
-            <marker date="1524042170501" expanded="true" signature="3601:3887" ph="..." />
-            <marker date="1524042170501" expanded="true" signature="3716:3881" ph="..." />
-            <marker date="1524042170501" expanded="true" signature="3781:3799" ph="..." />
-            <marker date="1524042170501" expanded="true" signature="3799:3868" ph="..." />
+            <marker date="1524048303328" expanded="true" signature="3582:3598" ph="..." />
+            <marker date="1524048303328" expanded="true" signature="3598:3884" ph="..." />
+            <marker date="1524048303328" expanded="true" signature="3713:3878" ph="..." />
+            <marker date="1524048303328" expanded="true" signature="3778:3796" ph="..." />
+            <marker date="1524048303328" expanded="true" signature="3796:3865" ph="..." />
           </folding>
         </state>
       </provider>
@@ -594,14 +623,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Table/Cell/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="5" column="1" lean-forward="false" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="462">
@@ -623,16 +644,6 @@
         <state relative-caret-position="21">
           <caret line="1" column="6" lean-forward="false" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Table/Cell/index.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="9" column="21" lean-forward="false" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="21" />
-          <folding>
-            <element signature="e#0#45#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -662,10 +673,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Table/DataTable/sidePanelDataRender.js">
+    <entry file="file://$PROJECT_DIR$/generateData.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="6" column="1" lean-forward="true" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
+        <state relative-caret-position="546">
+          <caret line="26" column="21" lean-forward="false" selection-start-line="26" selection-start-column="21" selection-end-line="26" selection-end-column="21" />
           <folding />
         </state>
       </provider>
@@ -674,6 +685,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="42">
           <caret line="2" column="41" lean-forward="false" selection-start-line="2" selection-start-column="41" selection-end-line="2" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Table/DataTable/sidePanelDataRender.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="6" column="1" lean-forward="true" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
           <folding />
         </state>
       </provider>
@@ -688,36 +707,46 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Table/DataTable/index.jsx">
+    <entry file="file://$PROJECT_DIR$/src/Table/Cell/index.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-428">
-          <caret line="46" column="93" lean-forward="true" selection-start-line="46" selection-start-column="93" selection-end-line="46" selection-end-column="93" />
+        <state relative-caret-position="189">
+          <caret line="9" column="22" lean-forward="true" selection-start-line="9" selection-start-column="22" selection-end-line="9" selection-end-column="22" />
           <folding>
             <element signature="e#0#45#0" expanded="true" />
-            <marker date="1524042170501" expanded="true" signature="3585:3601" ph="..." />
-            <marker date="1524042170501" expanded="true" signature="3601:3887" ph="..." />
-            <marker date="1524042170501" expanded="true" signature="3716:3881" ph="..." />
-            <marker date="1524042170501" expanded="true" signature="3781:3799" ph="..." />
-            <marker date="1524042170501" expanded="true" signature="3799:3868" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Table/Cell/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="5" column="27" lean-forward="false" selection-start-line="5" selection-start-column="27" selection-end-line="5" selection-end-column="27" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Table/index.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="412">
-          <caret line="80" column="15" lean-forward="true" selection-start-line="80" selection-start-column="15" selection-end-line="80" selection-end-column="15" />
+        <state relative-caret-position="1420">
+          <caret line="71" column="77" lean-forward="false" selection-start-line="71" selection-start-column="77" selection-end-line="71" selection-end-column="77" />
           <folding>
             <element signature="e#0#45#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/generateData.js">
+    <entry file="file://$PROJECT_DIR$/src/Table/DataTable/index.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="567">
-          <caret line="27" column="37" lean-forward="true" selection-start-line="27" selection-start-column="37" selection-end-line="27" selection-end-column="37" />
-          <folding />
+        <state relative-caret-position="-656">
+          <caret line="39" column="71" lean-forward="false" selection-start-line="39" selection-start-column="71" selection-end-line="39" selection-end-column="71" />
+          <folding>
+            <element signature="e#0#45#0" expanded="true" />
+            <marker date="1524048303328" expanded="true" signature="3582:3598" ph="..." />
+            <marker date="1524048303328" expanded="true" signature="3598:3884" ph="..." />
+            <marker date="1524048303328" expanded="true" signature="3713:3878" ph="..." />
+            <marker date="1524048303328" expanded="true" signature="3778:3796" ph="..." />
+            <marker date="1524048303328" expanded="true" signature="3796:3865" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>

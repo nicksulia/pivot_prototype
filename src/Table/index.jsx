@@ -20,7 +20,7 @@ class Table extends PureComponent {
             displayedElementsCount: 50,
             step: 10,
             minIndex: 0,
-            maxIndex: 49,
+            maxIndex: 50,
             data: [],
             dataLength: 0,
             containerHeight: 0,
@@ -63,21 +63,21 @@ class Table extends PureComponent {
         }
     }
     setNextIndexes = (customStep) => {
-        const { minIndex, maxIndex, dataLength, top, step } = this.state;
+        const { minIndex, maxIndex, dataLength, top, step, displayedElementsCount } = this.state;
         const elementsPerStep = customStep || step;
         if (maxIndex + elementsPerStep < dataLength) {
             this.setState({
                 step: elementsPerStep,
                 top: top + elementsPerStep * elementHeight,
-                minIndex: maxIndex - 50,
+                minIndex: maxIndex + elementsPerStep - displayedElementsCount,
                 maxIndex: maxIndex + elementsPerStep,
             });
-        } else if (maxIndex < dataLength) {
+        } else if (maxIndex < dataLength && dataLength - maxIndex < displayedElementsCount) {
             this.setState({
                 step: dataLength - maxIndex,
                 top: top + (dataLength - maxIndex) * elementHeight,
-                minIndex: maxIndex - 50,
-                maxIndex: dataLength -1,
+                minIndex: dataLength - displayedElementsCount,
+                maxIndex: dataLength,
             });
         }
     }
