@@ -46,10 +46,18 @@ class Table extends PureComponent {
     }
     handleScroll = () => {
         if (this.table && this.state.left !== this.table.scrollLeft) {
-            this.setState({
-                left: this.table.scrollLeft
-            });
+            this.handleHorizontalScroll();
+        } else {
+            this.handleVerticalScroll();
         }
+
+    }
+    handleHorizontalScroll = () => {
+        this.setState({
+            left: this.table.scrollLeft
+        });
+    }
+    handleVerticalScroll = () => {
         const { top, displayedElementsCount } = this.state;
         const scrollTop = (this.table && this.table.scrollTop) || this.table.scrollTop;
         const clientHeight = this.table.clientHeight || this.table.innerHeight;

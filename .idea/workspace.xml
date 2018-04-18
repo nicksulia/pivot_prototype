@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="29bd8029-1924-4034-a952-8e08bc7a276d" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/src/Table/Cell/style.css" afterPath="$PROJECT_DIR$/src/Table/Cell/style.css" />
+      <change beforePath="$PROJECT_DIR$/src/Table/DataTable/SideContainer/index.jsx" afterPath="$PROJECT_DIR$/src/Table/DataTable/SideContainer/index.jsx" />
       <change beforePath="$PROJECT_DIR$/src/Table/DataTable/index.jsx" afterPath="$PROJECT_DIR$/src/Table/DataTable/index.jsx" />
       <change beforePath="$PROJECT_DIR$/src/Table/index.jsx" afterPath="$PROJECT_DIR$/src/Table/index.jsx" />
     </list>
@@ -18,18 +18,18 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="index.jsx" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.jsx" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Table/DataTable/index.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-656">
-              <caret line="39" column="71" lean-forward="false" selection-start-line="39" selection-start-column="71" selection-end-line="39" selection-end-column="71" />
+            <state relative-caret-position="454">
+              <caret line="56" column="57" lean-forward="true" selection-start-line="56" selection-start-column="57" selection-end-line="56" selection-end-column="57" />
               <folding>
                 <element signature="e#0#45#0" expanded="true" />
-                <marker date="1524048303328" expanded="true" signature="3582:3598" ph="..." />
-                <marker date="1524048303328" expanded="true" signature="3598:3884" ph="..." />
-                <marker date="1524048303328" expanded="true" signature="3713:3878" ph="..." />
-                <marker date="1524048303328" expanded="true" signature="3778:3796" ph="..." />
-                <marker date="1524048303328" expanded="true" signature="3796:3865" ph="..." />
+                <marker date="1524052303352" expanded="true" signature="3732:3748" ph="..." />
+                <marker date="1524052303352" expanded="true" signature="3748:4076" ph="..." />
+                <marker date="1524052303352" expanded="true" signature="3908:4070" ph="..." />
+                <marker date="1524052303352" expanded="true" signature="3970:3988" ph="..." />
+                <marker date="1524052303352" expanded="true" signature="3988:4057" ph="..." />
               </folding>
             </state>
           </provider>
@@ -58,8 +58,8 @@
       <file leaf-file-name="index.jsx" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Table/index.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1420">
-              <caret line="71" column="77" lean-forward="false" selection-start-line="71" selection-start-column="77" selection-end-line="71" selection-end-column="77" />
+            <state relative-caret-position="328">
+              <caret line="57" column="11" lean-forward="true" selection-start-line="57" selection-start-column="11" selection-end-line="57" selection-end-column="11" />
               <folding>
                 <element signature="e#0#45#0" expanded="true" />
               </folding>
@@ -67,11 +67,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.jsx" pinned="false" current-in-tab="false">
+      <file leaf-file-name="index.jsx" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Table/DataTable/SideContainer/index.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="32" column="14" lean-forward="true" selection-start-line="32" selection-start-column="14" selection-end-line="32" selection-end-column="14" />
+            <state relative-caret-position="483">
+              <caret line="23" column="0" lean-forward="true" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
               <folding>
                 <element signature="e#0#45#0" expanded="true" />
               </folding>
@@ -145,15 +145,17 @@
       <find>paddingTop</find>
       <find>10</find>
       <find>table</find>
-      <find>marginLeft</find>
       <find>renderNewRows</find>
       <find>curr</find>
-      <find>style</find>
-      <find>renderRows</find>
       <find>maxIndex</find>
       <find>displayedElementsCount</find>
       <find>slice</find>
+      <find>renderRows</find>
+      <find>nextProps</find>
+      <find>this.props.</find>
       <find>else</find>
+      <find>style</find>
+      <find>marginLeft</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -177,11 +179,11 @@
         <option value="$PROJECT_DIR$/src/Table/DataTable/sidePanelDataRender.js" />
         <option value="$PROJECT_DIR$/src/Table/DataTable/style.css" />
         <option value="$PROJECT_DIR$/src/Table/DataTable/SideContainer/style.css" />
-        <option value="$PROJECT_DIR$/src/Table/DataTable/SideContainer/index.jsx" />
         <option value="$PROJECT_DIR$/generateData.js" />
         <option value="$PROJECT_DIR$/src/Table/Cell/style.css" />
         <option value="$PROJECT_DIR$/src/Table/index.jsx" />
         <option value="$PROJECT_DIR$/src/Table/DataTable/index.jsx" />
+        <option value="$PROJECT_DIR$/src/Table/DataTable/SideContainer/index.jsx" />
       </list>
     </option>
   </component>
@@ -320,12 +322,12 @@
       <updated>1522834990103</updated>
       <workItem from="1522834991365" duration="2195000" />
       <workItem from="1523881640657" duration="2905000" />
-      <workItem from="1523951260877" duration="23081000" />
+      <workItem from="1523951260877" duration="27084000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="54527000" />
+    <option name="totallyTimeSpent" value="58530000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
@@ -370,11 +372,11 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#45#0" expanded="true" />
-            <marker date="1524048303328" expanded="true" signature="3582:3598" ph="..." />
-            <marker date="1524048303328" expanded="true" signature="3598:3884" ph="..." />
-            <marker date="1524048303328" expanded="true" signature="3713:3878" ph="..." />
-            <marker date="1524048303328" expanded="true" signature="3778:3796" ph="..." />
-            <marker date="1524048303328" expanded="true" signature="3796:3865" ph="..." />
+            <marker date="1524052303352" expanded="true" signature="3732:3748" ph="..." />
+            <marker date="1524052303352" expanded="true" signature="3748:4076" ph="..." />
+            <marker date="1524052303352" expanded="true" signature="3908:4070" ph="..." />
+            <marker date="1524052303352" expanded="true" signature="3970:3988" ph="..." />
+            <marker date="1524052303352" expanded="true" signature="3988:4057" ph="..." />
           </folding>
         </state>
       </provider>
@@ -457,11 +459,11 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#45#0" expanded="true" />
-            <marker date="1524048303328" expanded="true" signature="3582:3598" ph="..." />
-            <marker date="1524048303328" expanded="true" signature="3598:3884" ph="..." />
-            <marker date="1524048303328" expanded="true" signature="3713:3878" ph="..." />
-            <marker date="1524048303328" expanded="true" signature="3778:3796" ph="..." />
-            <marker date="1524048303328" expanded="true" signature="3796:3865" ph="..." />
+            <marker date="1524052303352" expanded="true" signature="3732:3748" ph="..." />
+            <marker date="1524052303352" expanded="true" signature="3748:4076" ph="..." />
+            <marker date="1524052303352" expanded="true" signature="3908:4070" ph="..." />
+            <marker date="1524052303352" expanded="true" signature="3970:3988" ph="..." />
+            <marker date="1524052303352" expanded="true" signature="3988:4057" ph="..." />
           </folding>
         </state>
       </provider>
@@ -552,11 +554,11 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#45#0" expanded="true" />
-            <marker date="1524048303328" expanded="true" signature="3582:3598" ph="..." />
-            <marker date="1524048303328" expanded="true" signature="3598:3884" ph="..." />
-            <marker date="1524048303328" expanded="true" signature="3713:3878" ph="..." />
-            <marker date="1524048303328" expanded="true" signature="3778:3796" ph="..." />
-            <marker date="1524048303328" expanded="true" signature="3796:3865" ph="..." />
+            <marker date="1524052303352" expanded="true" signature="3732:3748" ph="..." />
+            <marker date="1524052303352" expanded="true" signature="3748:4076" ph="..." />
+            <marker date="1524052303352" expanded="true" signature="3908:4070" ph="..." />
+            <marker date="1524052303352" expanded="true" signature="3970:3988" ph="..." />
+            <marker date="1524052303352" expanded="true" signature="3988:4057" ph="..." />
           </folding>
         </state>
       </provider>
@@ -689,24 +691,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Table/DataTable/sidePanelDataRender.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="6" column="1" lean-forward="true" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Table/DataTable/SideContainer/index.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="32" column="14" lean-forward="true" selection-start-line="32" selection-start-column="14" selection-end-line="32" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#45#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Table/Cell/index.jsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
@@ -725,10 +709,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Table/DataTable/sidePanelDataRender.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="6" column="1" lean-forward="true" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Table/index.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1420">
-          <caret line="71" column="77" lean-forward="false" selection-start-line="71" selection-start-column="77" selection-end-line="71" selection-end-column="77" />
+        <state relative-caret-position="328">
+          <caret line="57" column="11" lean-forward="true" selection-start-line="57" selection-start-column="11" selection-end-line="57" selection-end-column="11" />
           <folding>
             <element signature="e#0#45#0" expanded="true" />
           </folding>
@@ -737,15 +729,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Table/DataTable/index.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-656">
-          <caret line="39" column="71" lean-forward="false" selection-start-line="39" selection-start-column="71" selection-end-line="39" selection-end-column="71" />
+        <state relative-caret-position="454">
+          <caret line="56" column="57" lean-forward="true" selection-start-line="56" selection-start-column="57" selection-end-line="56" selection-end-column="57" />
           <folding>
             <element signature="e#0#45#0" expanded="true" />
-            <marker date="1524048303328" expanded="true" signature="3582:3598" ph="..." />
-            <marker date="1524048303328" expanded="true" signature="3598:3884" ph="..." />
-            <marker date="1524048303328" expanded="true" signature="3713:3878" ph="..." />
-            <marker date="1524048303328" expanded="true" signature="3778:3796" ph="..." />
-            <marker date="1524048303328" expanded="true" signature="3796:3865" ph="..." />
+            <marker date="1524052303352" expanded="true" signature="3732:3748" ph="..." />
+            <marker date="1524052303352" expanded="true" signature="3748:4076" ph="..." />
+            <marker date="1524052303352" expanded="true" signature="3908:4070" ph="..." />
+            <marker date="1524052303352" expanded="true" signature="3970:3988" ph="..." />
+            <marker date="1524052303352" expanded="true" signature="3988:4057" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Table/DataTable/SideContainer/index.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="483">
+          <caret line="23" column="0" lean-forward="true" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#45#0" expanded="true" />
           </folding>
         </state>
       </provider>

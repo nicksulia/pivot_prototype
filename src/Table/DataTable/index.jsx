@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import Row from '../Row';
 import './style.css';
-//import SideContainer from './SideContainer'
+import SideContainer from './SideContainer'
 import sideDataRender from './sidePanelDataRender.js';
 
 class DataTable extends PureComponent {
@@ -27,54 +27,67 @@ class DataTable extends PureComponent {
     }
     componentWillReceiveProps(nextProps) {
         if (nextProps.data !== this.props.data) {
-            this.setState({
-                containerStyle:{
-                    minHeight: nextProps.containerHeight,
-                },
-                elContainerStyle:{
-                    top: nextProps.top
-                },
-                renderedRows: nextProps.data.length > nextProps.displayedElementsCount ?
-                    this.renderRows(nextProps, 0, nextProps.displayedElementsCount)
-                    :
-                    this.renderRows(nextProps, 0, nextProps.data.length),
-                sideData: sideDataRender(nextProps.data.length),
-                data: nextProps.data,
-                step: nextProps.step
-            });
+            this.setNewState(nextProps);
         } else if (nextProps.maxIndex > this.props.maxIndex && nextProps.maxIndex <= nextProps.dataLength) {
-            let renderedRows;
-            if(nextProps.maxIndex - this.props.maxIndex < nextProps.displayedElementsCount) {
-                const remainingRows = this.state.renderedRows.slice(nextProps.maxIndex - this.props.maxIndex, nextProps.displayedElementsCount);
-                const newRows = this.renderNewRows(
-                    nextProps.data.slice(this.props.maxIndex, nextProps.maxIndex),
-                    this.props.maxIndex
-                );
-                renderedRows = remainingRows.concat(newRows);
-            } else {
-                renderedRows = this.renderRows(nextProps, nextProps.minIndex, nextProps.maxIndex);
-            }
-
-            this.setState({
-                containerStyle: {
-                    minHeight: nextProps.containerHeight,
-                },
-                elContainerStyle:{
-                    top: nextProps.top
-                },
-                sidePanelStyle: {
-                    top: nextProps.top,
-                    marginLeft: nextProps.left
-                },
-                renderedRows,
-                step: nextProps.step
-            })
+            this.updateElementsByIndex(nextProps);
+        } else if(nextProps.left !== this.props.left) {
+            this.updateByHorizontalScroll(nextProps);
         }
     }
 
+    updateByHorizontalScroll = ({ top, left }) => {
+        this.setState({
+            sidePanelStyle: {
+                top,
+                marginLeft: left
+            }
+        })
+    }
 
-    renderRow = (row, index) => {
-        return <Row elements = {row} key = {`row-${index}`}/>
+    updateElementsByIndex = (nextProps) => {
+        const { maxIndex, displayedElementsCount, data, minIndex } = nextProps;
+        const oldMaxIndex = this.props.maxIndex;
+        let renderedRows;
+        if (maxIndex - oldMaxIndex < displayedElementsCount) {
+            const remainingRows = this.state.renderedRows.slice(maxIndex - oldMaxIndex, displayedElementsCount);
+            const newRows = this.renderNewRows(
+                data.slice(oldMaxIndex, maxIndex),
+                oldMaxIndex
+            );
+            renderedRows = remainingRows.concat(newRows);
+        } else {
+            renderedRows = this.renderRows(nextProps, minIndex, maxIndex);
+        }
+        this.setState({
+            elContainerStyle:{
+                top: nextProps.top
+            },
+            sidePanelStyle: {
+                top: nextProps.top,
+                marginLeft: nextProps.left
+            },
+            renderedRows,
+            step: nextProps.step
+        })
+    }
+
+    setNewState = (nextProps) => {
+        const { containerHeight, displayedElementsCount, data, top, step } = nextProps;
+        this.setState({
+            containerStyle:{
+                minHeight: containerHeight,
+            },
+            elContainerStyle:{
+                top: top
+            },
+            renderedRows: data.length > displayedElementsCount ?
+                this.renderRows(nextProps, 0, displayedElementsCount)
+                :
+                this.renderRows(nextProps, 0, data.length),
+            sideData: sideDataRender(data.length),
+            data,
+            step
+        });
     }
 
     renderNewRows = (rows, currIndex) => {
@@ -86,11 +99,11 @@ class DataTable extends PureComponent {
     }
 
     render() {
-        const { minIndex, maxIndex, left } = this.props;
+        const { minIndex, maxIndex, left, displayedElementsCount } = this.props;
         const { elContainerStyle, sidePanelStyle, containerStyle, sideData } = this.state;
         return (
             <div className="data-table" style = {containerStyle}>
-                {/*<SideContainer style={sidePanelStyle} minIndex={minIndex} maxIndex={maxIndex} data={sideData}/>*/}
+                <SideContainer displayedElementsCount={displayedElementsCount} style={sidePanelStyle} minIndex={minIndex} maxIndex={maxIndex} data={sideData}/>
                 <div className="data-table-container" style={elContainerStyle}>
                     {this.state.renderedRows}
                 </div>
