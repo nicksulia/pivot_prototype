@@ -7,6 +7,8 @@ class SideContainer extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
+            left: props.left,
+            step: props.step,
             data: props.data,
             renderedRows: props.data.length > 50 ? props.data.slice(0,49).map(this.renderRow) : props.data.map(this.renderRow)
         };
@@ -39,7 +41,7 @@ class SideContainer extends PureComponent {
     }
     render() {
         return (
-                <div className="side-table-container" style={this.props.elContainerStyle}>
+                <div className="side-table-container" style={this.props.style}>
                     {this.state.renderedRows}
                 </div>
         );

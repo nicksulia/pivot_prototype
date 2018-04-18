@@ -59,18 +59,25 @@ class Table extends PureComponent {
             'Elements position: ' + (elementsPosition));
         if (scrolledToBottomVirtual) {
             const scrollToElementsCount = Math.ceil((scrollTop - elementsPosition)/elementHeight);
-            this.setNextIndexes(scrollToElementsCount < 50 ? scrollToElementsCount : 49)
+            this.setNextIndexes(scrollToElementsCount)
         }
     }
     setNextIndexes = (customStep) => {
         const { minIndex, maxIndex, dataLength, top, step } = this.state;
         const elementsPerStep = customStep || step;
-        if (maxIndex + 1 < dataLength) {
+        if (maxIndex + elementsPerStep < dataLength) {
             this.setState({
-                step: 10,
-                top: top + 10 * elementHeight,
-                minIndex: minIndex + 10,
-                maxIndex: maxIndex + 10,
+                step: elementsPerStep,
+                top: top + elementsPerStep * elementHeight,
+                minIndex: maxIndex - 50,
+                maxIndex: maxIndex + elementsPerStep,
+            });
+        } else if (maxIndex < dataLength) {
+            this.setState({
+                step: dataLength - maxIndex,
+                top: top + (dataLength - maxIndex) * elementHeight,
+                minIndex: maxIndex - 50,
+                maxIndex: dataLength -1,
             });
         }
     }
