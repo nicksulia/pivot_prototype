@@ -29,16 +29,13 @@ class Table extends PureComponent {
         }
     }
     componentDidMount(){
-        //this.table.addEventListener('scroll', this.handleScroll);
         fetch(mockDataUrl, myInit)
             .then((response) => response.json())
             .then(data => {
                 this.setState({data, dataLength: data.length, containerHeight: data.length * elementHeight});
             });
     }
-    componentWillUnmount(){
-        //this.table.removeEventListener('scroll', this.handleScroll);
-    }
+
     setRef = (el) => {
         if (el) {
             this.table = el;
@@ -47,13 +44,14 @@ class Table extends PureComponent {
     handleScroll = () => {
         if (this.state.left !== this.table.scrollLeft) {
             this.handleHorizontalScroll();
-        } else {
-            this.handleVerticalScroll();
-        }
+        } else if (this.state.top > this.table.scrollTop) {
 
+        } else {
+            this.handleVerticalScrollDown();
+        }
     }
-    componentDidUpdate() {
-        console.log();
+    handleVerticalScrollUp = () => {
+        
     }
 
     handleHorizontalScroll = () => {
@@ -61,7 +59,7 @@ class Table extends PureComponent {
             left: this.table.scrollLeft
         });
     }
-    handleVerticalScroll = () => {
+    handleVerticalScrollDown = () => {
         const { top, displayedElementsCount } = this.state;
         const scrollTop = (this.table && this.table.scrollTop) || this.table.scrollTop;
         const clientHeight = this.table.clientHeight || this.table.innerHeight;

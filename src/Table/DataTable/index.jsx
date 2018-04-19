@@ -27,10 +27,12 @@ class DataTable extends PureComponent {
     componentWillReceiveProps(nextProps) {
         if (nextProps.data !== this.props.data) {
             this.setNewState(nextProps);
-        } else if (nextProps.maxIndex > this.props.maxIndex && nextProps.maxIndex <= nextProps.dataLength) {
-            this.updateElementsByIndex(nextProps);
         } else if(nextProps.left !== this.props.left) {
             this.updateByHorizontalScroll(nextProps);
+        } else if (nextProps.maxIndex > this.props.maxIndex && nextProps.maxIndex <= nextProps.dataLength) {
+            this.updateElementsByIndex(nextProps);
+        } else if (nextProps.maxIndex < this.props.maxIndex && nextProps.minIndex >= 0) {
+
         }
     }
 
