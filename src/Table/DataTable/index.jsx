@@ -114,7 +114,7 @@ class DataTable extends PureComponent {
         const { elContainerStyle, sidePanelStyle, containerStyle, sideData } = this.state;
         return (
             <div className="data-table" style = {containerStyle}>
-                {/*<SideContainer displayedElementsCount={displayedElementsCount} style={sidePanelStyle} minIndex={minIndex} maxIndex={maxIndex} data={sideData}/>*/}
+                <SideContainer displayedElementsCount={displayedElementsCount} style={sidePanelStyle} minIndex={minIndex} maxIndex={maxIndex} data={sideData}/>
                 <div className="data-table-container" style={elContainerStyle}>
                     {this.state.renderedRows}
                 </div>

@@ -8,7 +8,6 @@ class SideContainer extends PureComponent {
         super(props);
         this.state = {
             left: props.left,
-            step: props.step,
             data: props.data,
             renderedRows: props.data.length > props.displayedElementsCount ? this.renderRows(props, 0, props.displayedElementsCount - 1) : this.renderRows(props, 0, props.data.length - 1)
         };
@@ -17,7 +16,11 @@ class SideContainer extends PureComponent {
     componentWillReceiveProps(nextProps) {
         if (nextProps.data !== this.props.data) {
             this.setNewState(nextProps);
-        } else if (nextProps.maxIndex > this.props.maxIndex && nextProps.maxIndex <= nextProps.data.length) {
+        } else if(nextProps.left !== this.props.left) {
+            this.updateByHorizontalScroll(nextProps);
+        } else if (nextProps.maxIndex !== this.props.maxIndex
+            && nextProps.maxIndex <= nextProps.data.length
+            && nextProps.minIndex >= 0) {
             this.updateElementsByIndex(nextProps);
         }
     }
@@ -25,8 +28,20 @@ class SideContainer extends PureComponent {
     updateElementsByIndex = (nextProps) => {
         const { maxIndex, displayedElementsCount, data, minIndex } = nextProps;
         const oldMaxIndex = this.props.maxIndex;
+        const oldMinIndex = this.props.minIndex;
         let renderedRows;
-        if (maxIndex - oldMaxIndex < displayedElementsCount) {
+        if (oldMinIndex > minIndex) {
+            if (oldMinIndex - minIndex < displayedElementsCount) {
+                const remainingRows = this.state.renderedRows.slice(maxIndex, oldMaxIndex);
+                const newRows = this.renderNewRows(
+                    data.slice(minIndex, maxIndex),
+                    minIndex
+                );
+                renderedRows = newRows.concat(remainingRows);
+            } else {
+                renderedRows = this.renderRows(nextProps, minIndex, maxIndex);
+            }
+        } else if (maxIndex - oldMaxIndex < displayedElementsCount) {
             const remainingRows = this.state.renderedRows.slice(maxIndex - oldMaxIndex, displayedElementsCount);
             const newRows = this.renderNewRows(
                 data.slice(oldMaxIndex, maxIndex),
@@ -37,9 +52,7 @@ class SideContainer extends PureComponent {
             renderedRows = this.renderRows(nextProps, minIndex, maxIndex);
         }
         this.setState({
-
-            renderedRows,
-            step: nextProps.step
+            renderedRows
         })
     }
 
@@ -49,8 +62,7 @@ class SideContainer extends PureComponent {
                 this.renderRows(nextProps, 0, nextProps.displayedElementsCount)
                 :
                 this.renderRows(nextProps, 0, nextProps.data.length),
-            data: nextProps.data,
-            step: nextProps.step
+            data: nextProps.data
         });
     }
 

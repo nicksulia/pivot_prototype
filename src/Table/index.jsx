@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import DataTable from './DataTable';
 import './style.css';
+import Scrollbars from 'react-custom-scrollbars';
 
 const mockDataUrl = '/mockData/data.json';
 const  headers = {
@@ -14,6 +15,7 @@ const myInit = {
 }
 const elementHeight = 20;
 class Table extends PureComponent {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -36,13 +38,9 @@ class Table extends PureComponent {
             });
     }
 
-    setRef = (el) => {
-        if (el) {
-            this.table = el;
-        }
-    }
+    setTable = scrollbar => { this.table = scrollbar };
     handleScroll = () => {
-        if (this.state.left !== this.table.scrollLeft) {
+        if (this.state.left !== this.table.getScrollLeft()) {
             this.handleHorizontalScroll();
         } else {
             this.handleVerticalScroll();
@@ -51,13 +49,13 @@ class Table extends PureComponent {
 
     handleHorizontalScroll = () => {
         this.setState({
-            left: this.table.scrollLeft
+            left: this.table.getScrollLeft()
         });
     }
     handleVerticalScroll = () => {
         const { top, displayedElementsCount } = this.state;
-        const scrollTop = (this.table && this.table.scrollTop) || this.table.scrollTop;
-        const clientHeight = this.table.clientHeight || this.table.innerHeight;
+        const scrollTop = (this.table && this.table.getScrollTop());
+        const clientHeight = this.table.getClientHeight();
         const elementsPosition = top +  displayedElementsCount * elementHeight - clientHeight;
         const scrolledToBottomVirtual = Math.ceil(scrollTop) >= elementsPosition;
         const scrolledToTopVirtual = scrollTop <= top;
@@ -92,7 +90,6 @@ class Table extends PureComponent {
     setPrevIndexes = (customStep) => {
         const { minIndex, top, step, displayedElementsCount } = this.state;
         const elementsPerStep = customStep && customStep > step ? customStep : step;
-        console.log(elementsPerStep, minIndex);
         if (minIndex - elementsPerStep > 0) {
             this.setState({
                 top: top - elementsPerStep * elementHeight,
@@ -107,12 +104,21 @@ class Table extends PureComponent {
             });
         }
     }
+    renderTrackHorizontal = ({ style, ...props }) => (<div {...props} className="track-horizontal"/>);
+    renderTrackVertical = ({ style, ...props }) => (<div {...props} className="track-vertical"/>);
+
+    scrollbarsStyle = {height: 400, width: 1000};
 
     render() {
         return (
-            <div ref = {this.setRef} className="table" onScroll={this.handleScroll}>
+            <Scrollbars
+                renderTrackHorizontal={this.renderTrackHorizontal}
+                renderTrackVertical={this.renderTrackVertical}
+                style={this.scrollbarsStyle}
+                ref={this.setTable}
+                onScroll={this.handleScroll}>
                 <DataTable {...this.state} />
-            </div>
+            </Scrollbars>
         );
     }
 }
