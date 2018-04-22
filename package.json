@@ -5,6 +5,7 @@
   "dependencies": {
     "pushstate-server": "^3.0.1",
     "react": "^16.3.1",
+    "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^16.3.1",
     "react-scripts": "1.1.4"
   },

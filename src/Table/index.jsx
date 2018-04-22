@@ -44,14 +44,9 @@ class Table extends PureComponent {
     handleScroll = () => {
         if (this.state.left !== this.table.scrollLeft) {
             this.handleHorizontalScroll();
-        } else if (this.state.top > this.table.scrollTop) {
-
         } else {
-            this.handleVerticalScrollDown();
+            this.handleVerticalScroll();
         }
-    }
-    handleVerticalScrollUp = () => {
-        
     }
 
     handleHorizontalScroll = () => {
@@ -59,17 +54,21 @@ class Table extends PureComponent {
             left: this.table.scrollLeft
         });
     }
-    handleVerticalScrollDown = () => {
+    handleVerticalScroll = () => {
         const { top, displayedElementsCount } = this.state;
         const scrollTop = (this.table && this.table.scrollTop) || this.table.scrollTop;
         const clientHeight = this.table.clientHeight || this.table.innerHeight;
         const elementsPosition = top +  displayedElementsCount * elementHeight - clientHeight;
         const scrolledToBottomVirtual = Math.ceil(scrollTop) >= elementsPosition;
+        const scrolledToTopVirtual = scrollTop <= top;
         console.log('scrollTop: ' + scrollTop,
             'Elements position: ' + (elementsPosition));
         if (scrolledToBottomVirtual) {
             const scrollToElementsCount = Math.ceil((scrollTop - elementsPosition)/elementHeight);
             this.setNextIndexes(scrollToElementsCount)
+        } else if (scrolledToTopVirtual) {
+            const scrollToElementsCount = Math.ceil((top - scrollTop)/elementHeight);
+            this.setPrevIndexes(scrollToElementsCount);
         }
     }
     setNextIndexes = (customStep) => {
@@ -89,6 +88,26 @@ class Table extends PureComponent {
             });
         }
     }
+
+    setPrevIndexes = (customStep) => {
+        const { minIndex, top, step, displayedElementsCount } = this.state;
+        const elementsPerStep = customStep && customStep > step ? customStep : step;
+        console.log(elementsPerStep, minIndex);
+        if (minIndex - elementsPerStep > 0) {
+            this.setState({
+                top: top - elementsPerStep * elementHeight,
+                minIndex: minIndex - elementsPerStep,
+                maxIndex: minIndex - elementsPerStep + displayedElementsCount,
+            });
+        } else if (minIndex > 0 && minIndex - elementsPerStep <= 0) {
+            this.setState({
+                top: 0,
+                minIndex: 0,
+                maxIndex: 50,
+            });
+        }
+    }
+
     render() {
         return (
             <div ref = {this.setRef} className="table" onScroll={this.handleScroll}>
