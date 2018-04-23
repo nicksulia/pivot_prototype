@@ -21,7 +21,11 @@ class DataTable extends PureComponent {
                 marginLeft: props.left
             },
             data: props.data,
-            renderedRows: props.data.length > props.displayedElementsCount ? this.renderRows(props, 0, props.displayedElementsCount - 1) : this.renderRows(props, 0, props.data.length - 1)
+            renderedRows: props.dataLength ?
+                props.dataLength > props.displayedElementsCount ?
+                    this.renderRows(props, 0, props.displayedElementsCount - 1)
+                    : this.renderRows(props, 0, props.dataLength - 1)
+                : []
         };
     }
     componentWillReceiveProps(nextProps) {
@@ -102,19 +106,23 @@ class DataTable extends PureComponent {
     }
 
     renderNewRows = (rows, currIndex) => {
-        return rows.map((row, index) => (<Row elements = {row} key = {`row-${index + currIndex}`} />))
+        console.log(this.props.elementWidth)
+        return rows.map((row, index) => (<Row elementWidth={this.props.elementWidth} elements={row} key = {`row-${index + currIndex}`} />))
     }
 
     renderRows = (props, minIndex, maxIndex) => {
-        return props.data.slice(minIndex, maxIndex).map((row, index) => (<Row elements = {row} key = {`row-${index + minIndex}`} />))
+        return props.data.slice(minIndex, maxIndex).map(
+            (row, index) =>
+                (<Row elementWidth={props.elementWidth} elements={row} key = {`row-${index + minIndex}`} />)
+        )
     }
 
     render() {
-        const { minIndex, maxIndex, displayedElementsCount } = this.props;
+        const { minIndex, maxIndex, displayedElementsCount, dataLength } = this.props;
         const { elContainerStyle, sidePanelStyle, containerStyle, sideData } = this.state;
         return (
             <div className="data-table" style = {containerStyle}>
-                <SideContainer displayedElementsCount={displayedElementsCount} style={sidePanelStyle} minIndex={minIndex} maxIndex={maxIndex} data={sideData}/>
+                {/*<SideContainer dataLength={dataLength} displayedElementsCount={displayedElementsCount} style={sidePanelStyle} minIndex={minIndex} maxIndex={maxIndex} data={sideData}/>*/}
                 <div className="data-table-container" style={elContainerStyle}>
                     {this.state.renderedRows}
                 </div>

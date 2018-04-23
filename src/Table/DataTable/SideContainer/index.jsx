@@ -7,8 +7,6 @@ class SideContainer extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            left: props.left,
-            data: props.data,
             renderedRows: props.data.length > props.displayedElementsCount ? this.renderRows(props, 0, props.displayedElementsCount - 1) : this.renderRows(props, 0, props.data.length - 1)
         };
     }
@@ -16,10 +14,8 @@ class SideContainer extends PureComponent {
     componentWillReceiveProps(nextProps) {
         if (nextProps.data !== this.props.data) {
             this.setNewState(nextProps);
-        } else if(nextProps.left !== this.props.left) {
-            this.updateByHorizontalScroll(nextProps);
         } else if (nextProps.maxIndex !== this.props.maxIndex
-            && nextProps.maxIndex <= nextProps.data.length
+            && nextProps.maxIndex <= nextProps.dataLength
             && nextProps.minIndex >= 0) {
             this.updateElementsByIndex(nextProps);
         }
@@ -61,7 +57,7 @@ class SideContainer extends PureComponent {
             renderedRows: nextProps.data.length > nextProps.displayedElementsCount ?
                 this.renderRows(nextProps, 0, nextProps.displayedElementsCount)
                 :
-                this.renderRows(nextProps, 0, nextProps.data.length),
+                this.renderRows(nextProps, 0, nextProps.dataLength),
             data: nextProps.data
         });
     }

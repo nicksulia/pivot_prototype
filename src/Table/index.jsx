@@ -13,12 +13,17 @@ const myInit = {
     method: 'GET',
     headers
 }
+
+const reduceFindLongest = (curr, next) => (`${curr}`.length > `${next}`.length ? curr : next);
+
 const elementHeight = 20;
 class Table extends PureComponent {
-
+    canvasElement = document.createElement('canvas').getContext('2d');
     constructor(props) {
         super(props);
         this.state = {
+            fontSize: 14,
+            fontFamily: 'sans-serif',
             displayedElementsCount: 50,
             step: 10,
             minIndex: 0,
@@ -27,14 +32,26 @@ class Table extends PureComponent {
             dataLength: 0,
             containerHeight: 0,
             top: 0,
-            left: 0
+            left: 0,
+            elementWidth: 10
         }
     }
     componentDidMount(){
         fetch(mockDataUrl, myInit)
             .then((response) => response.json())
             .then(data => {
-                this.setState({data, dataLength: data.length, containerHeight: data.length * elementHeight});
+                const longestContent = data.reduce((curr, next) => {
+                    let longestNext =  next.reduce(reduceFindLongest);
+                    return `${curr}`.length > `${longestNext}`.length ? curr : longestNext
+                }, 0);
+                this.canvasElement.font = `${this.state.fontSize}px ${this.state.fontFamily}`;
+                const width = this.canvasElement.measureText(longestContent).width;
+                this.setState({
+                    data,
+                    dataLength: data.length,
+                    containerHeight: data.length * elementHeight,
+                    elementWidth: width ? width + 10 : 0
+                });
             });
     }
 
@@ -55,7 +72,7 @@ class Table extends PureComponent {
     handleVerticalScroll = () => {
         const { top, displayedElementsCount } = this.state;
         const scrollTop = (this.table && this.table.getScrollTop());
-        const clientHeight = this.table.getClientHeight();
+        const clientHeight = this.table.getClientHeight(); // move to state and reset it every time we meet context that's needs to bo re-sized
         const elementsPosition = top +  displayedElementsCount * elementHeight - clientHeight;
         const scrolledToBottomVirtual = Math.ceil(scrollTop) >= elementsPosition;
         const scrolledToTopVirtual = scrollTop <= top;
@@ -100,14 +117,14 @@ class Table extends PureComponent {
             this.setState({
                 top: 0,
                 minIndex: 0,
-                maxIndex: 50,
+                maxIndex: displayedElementsCount,
             });
         }
     }
     renderTrackHorizontal = ({ style, ...props }) => (<div {...props} className="track-horizontal"/>);
     renderTrackVertical = ({ style, ...props }) => (<div {...props} className="track-vertical"/>);
 
-    scrollbarsStyle = {height: 400, width: 1000};
+    scrollbarsStyle = {height: 700, width: 1000};
 
     render() {
         return (

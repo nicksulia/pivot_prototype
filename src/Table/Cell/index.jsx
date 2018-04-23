@@ -1,9 +1,10 @@
 import React  from 'react';
 import './style.css';
 
-const Cell = ({ data }) => {
+const Cell = ({ data, width }) => {
+    const style = { width };
     return (
-        <div className="table-cell">
+        <div className="table-cell" style={style}>
             {data}
         </div>
     );

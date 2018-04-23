@@ -7,37 +7,33 @@ class Row extends Component {
         super(props);
         this.state = {
             style: {
-                width: props.elements ? props.elements.length * 100 : 0
+                width: props.elements ? props.elements.length * props.elementWidth : 0
             },
-            isChanged: false
+            elements:  props.elements
+            && props.elements.length
+            && this.renderElements(props.elements)
         };
-        if (props.elements && props.elements.length) {
-            this.elements = this.renderElements(props.elements);
-        }
     }
     componentWillReceiveProps(nextProps) {
-        if(nextProps.elements !== this.props.elements) {
-            this.elements = this.renderElements(nextProps.elements);
+        if (nextProps.elements !== this.props.elements || nextProps.width !== this.props.width) {
+            const elements = this.renderElements(nextProps.elements);
             this.setState({
-                isChanged: true
+                elements,
+                style: {
+                    width: nextProps.width
+                }
             })
-        } else {
-            this.elements = [];
-        }
-    }
-    shouldComponentUpdate(nextProps, nextState) {
-        return nextState.isChanged;
-    }
-    componentDidUpdate() {
-        const { isChanged } = this.state;
-        if (isChanged) {
+        } else if (nextProps.width !== this.props.width) {
             this.setState({
-                isChanged: !isChanged
-            });
+                style: {
+                    width: nextProps.width
+                }
+            })
         }
     }
+
     renderCell = (el, index) => {
-        return <Cell data = {el} key = {`cell-${index}`}/>
+        return <Cell width={this.props.elementWidth} data = {el} key = {`cell-${index}`}/>
     };
     renderElements = (elements = []) => {
         return elements.map(this.renderCell)
@@ -45,7 +41,7 @@ class Row extends Component {
     render() {
         return (
             <div className="row" style={this.state.style}>
-                {this.elements}
+                {this.state.elements}
             </div>
         );
     }
