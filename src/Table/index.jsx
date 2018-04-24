@@ -11,13 +11,13 @@ class Table extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            displayedElementsCount: 50,
-            step: 10,
+            displayedElementsCount: 70,
+            step: 30,
             minIndex: 0,
-            maxIndex: 50,
+            maxIndex: 70,
             data: [],
             dataLength: 0,
-            containerHeight: 0,
+            containerHeight: 10000,
             top: 0,
             left: 0,
             elementHeight: 20,
@@ -29,7 +29,7 @@ class Table extends PureComponent {
         cellSizer.init();
         getData()
             .then(data => {
-                const { colWidth, rowHeight } = this.getElementsSize(data);
+                const [ colWidth, rowHeight ] = this.getElementsSize(data, this.state.minIndex, this.state.maxIndex);
                 this.setState({
                     data,
                     dataLength: data.length,
@@ -42,9 +42,9 @@ class Table extends PureComponent {
         cellSizer.clearDOM();
     }
 
-    getElementsSize = (data) => {
+    getElementsSize = (data, minIndex, maxIndex) => {
         const tempData = data && data.length ? data : this.state.data;
-        const { minIndex, maxIndex, colWidth, rowHeight } = this.state;
+        const { colWidth, rowHeight } = this.state;
         const newRowHeight = rowHeight.length ? rowHeight.slice(0) : new Array( maxIndex - minIndex);
         const newColWidth = colWidth.length ? colWidth.slice(0) : new Array( tempData[0].length );
         for (let i = (minIndex >= 0 && minIndex < tempData.length) ? minIndex : 0,
@@ -64,10 +64,7 @@ class Table extends PureComponent {
                 }
             })
         }
-        return { colWidth: newColWidth, rowHeight: newRowHeight };
-    }
-    resizeColumn = (columnIndex) => {
-
+        return [ newColWidth, newRowHeight ];
     }
 
     setTable = scrollbar => { this.table = scrollbar };
@@ -104,17 +101,28 @@ class Table extends PureComponent {
     setNextIndexes = (customStep) => {
         const { maxIndex, dataLength, top, step, displayedElementsCount, elementHeight } = this.state;
         const elementsPerStep = customStep && customStep > step ? customStep : step;
-        if (maxIndex + elementsPerStep < dataLength) {
+        let newMinIndex, newMaxIndex, newTop, colWidth, rowHeight;
+
+        if (maxIndex + elementsPerStep < dataLength || maxIndex < dataLength && dataLength - maxIndex < displayedElementsCount) {
+            if (maxIndex + elementsPerStep < dataLength) {
+
+                newTop = top + elementsPerStep * elementHeight;
+                newMinIndex = maxIndex + elementsPerStep - displayedElementsCount;
+                newMaxIndex = maxIndex + elementsPerStep;
+                let newSize =
+                [ colWidth, rowHeight ] = this.getElementsSize(this.state.data, newMinIndex, newMaxIndex);
+            } else if (maxIndex < dataLength && dataLength - maxIndex < displayedElementsCount) {
+                newTop = top + (dataLength - maxIndex) * elementHeight;
+                newMinIndex = dataLength - displayedElementsCount;
+                newMaxIndex = dataLength;
+                [ colWidth, rowHeight ] = this.getElementsSize(this.state.data, newMinIndex, newMaxIndex);
+            }
             this.setState({
-                top: top + elementsPerStep * elementHeight,
-                minIndex: maxIndex + elementsPerStep - displayedElementsCount,
-                maxIndex: maxIndex + elementsPerStep,
-            });
-        } else if (maxIndex < dataLength && dataLength - maxIndex < displayedElementsCount) {
-            this.setState({
-                top: top + (dataLength - maxIndex) * elementHeight,
-                minIndex: dataLength - displayedElementsCount,
-                maxIndex: dataLength,
+                colWidth,
+                rowHeight,
+                top: newTop,
+                minIndex: newMinIndex,
+                maxIndex: newMaxIndex,
             });
         }
     }
@@ -122,17 +130,22 @@ class Table extends PureComponent {
     setPrevIndexes = (customStep) => {
         const { minIndex, top, step, displayedElementsCount, elementHeight } = this.state;
         const elementsPerStep = customStep && customStep > step ? customStep : step;
-        if (minIndex - elementsPerStep > 0) {
+        let newMinIndex, newMaxIndex, newTop, colWidth, rowHeight;
+
+        if (minIndex - elementsPerStep > 0 || minIndex > 0 && minIndex - elementsPerStep <= 0) {
+            if (minIndex - elementsPerStep > 0) {
+                newTop = top - elementsPerStep * elementHeight;
+                newMinIndex = minIndex - elementsPerStep;
+                newMaxIndex = minIndex - elementsPerStep + displayedElementsCount;
+            } else if (minIndex > 0 && minIndex - elementsPerStep <= 0) {
+                newTop = 0;
+                newMinIndex = 0;
+                newMaxIndex = displayedElementsCount;
+            }
             this.setState({
-                top: top - elementsPerStep * elementHeight,
-                minIndex: minIndex - elementsPerStep,
-                maxIndex: minIndex - elementsPerStep + displayedElementsCount,
-            });
-        } else if (minIndex > 0 && minIndex - elementsPerStep <= 0) {
-            this.setState({
-                top: 0,
-                minIndex: 0,
-                maxIndex: displayedElementsCount,
+                top: newTop,
+                minIndex: newMinIndex,
+                maxIndex: newMaxIndex,
             });
         }
     }

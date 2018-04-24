@@ -10,33 +10,36 @@ class Row extends Component {
             && props.elements.length
             && this.renderElements(props),
             style: {
-
+                height: props.height
             }
         };
     }
     componentWillReceiveProps(nextProps) {
-        if (nextProps.elements !== this.props.elements
-            || nextProps.colWidth !== this.props.colWidth
-            || nextProps.height !== this.props.height) {
+        if (nextProps.elements !== this.props.elements) {
             const elements = this.renderElements(nextProps);
             this.setState({
-                elements,
                 style: {
                     height: nextProps.height,
-                    width: this.getTotalWidth(nextProps)
+                },
+                elements
+            });
+        } else if (nextProps.height !== this.props.height) {
+            this.setState({
+                style: {
+                    height: nextProps.height,
                 }
-            })
+            });
         }
     }
 
     getTotalWidth = (nextProps) => nextProps.colWidth.reduce((curr, next) => curr + next);
 
-    // renderCell = (el, index) => {
-    //     return <Cell width={this.props.colWidth[index]} data = {el} key = {`cell-${index}`}/>
-    // };
     renderElements = (props) => {
         return props.elements && props.elements.map((el, index) => {
-            return <Cell width={props.colWidth[index]} data = {el} key = {`cell-${index}`}/>
+            return <Cell
+                width={props.colWidth[index]}
+                data = {el}
+                key = {`cell-${index}`}/>
         })
     };
     render() {

@@ -2,7 +2,7 @@ const createContentWrapper = () => {
 
     const cell = document.createElement('div');
     cell.style.display = 'table-cell';
-    cell.style.whiteSpace = 'pre';
+    cell.style.whiteSpace = 'nowrap';
     cell.style.left = '-10000px';
     cell.style.position = 'absolute';
     cell.style.top = '-10000px';

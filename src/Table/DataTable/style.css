@@ -1,10 +1,9 @@
 .data-table {
-    display: flex;
-    flex-direction: column;
     position: relative;
 }
 .data-table-container {
     left: 100px;
-    display: table;
+    display: inline-flex;
+    flex-direction: column;
     position: absolute;
 }

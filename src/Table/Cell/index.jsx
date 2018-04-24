@@ -7,7 +7,10 @@ const Cell = ({ data, width }) => {
         __html: data
     }
     return (
-        <div className="table-cell" style={style} dangerouslySetInnerHTML = {html}/>
+        <div
+            className="table-cell"
+            style={style}
+            dangerouslySetInnerHTML = {html}/>
     );
 };
 
