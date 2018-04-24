@@ -2,28 +2,15 @@ import React, { PureComponent } from 'react';
 import DataTable from './DataTable';
 import './style.css';
 import Scrollbars from 'react-custom-scrollbars';
+import CellPreRender from '../utils/cell-pre-render';
+import { getData } from '../utils/api/configAPI.js';
 
-const mockDataUrl = '/mockData/data.json';
-const  headers = {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
-    'credentials': 'same-origin',
-};
-const myInit = {
-    method: 'GET',
-    headers
-}
+const cellSizer = new CellPreRender();
 
-const reduceFindLongest = (curr, next) => (`${curr}`.length > `${next}`.length ? curr : next);
-
-const elementHeight = 20;
 class Table extends PureComponent {
-    canvasElement = document.createElement('canvas').getContext('2d');
     constructor(props) {
         super(props);
         this.state = {
-            fontSize: 14,
-            fontFamily: 'sans-serif',
             displayedElementsCount: 50,
             step: 10,
             minIndex: 0,
@@ -33,26 +20,54 @@ class Table extends PureComponent {
             containerHeight: 0,
             top: 0,
             left: 0,
-            elementWidth: 10
+            elementHeight: 20,
+            colWidth: [],
+            rowHeight: []
         }
     }
-    componentDidMount(){
-        fetch(mockDataUrl, myInit)
-            .then((response) => response.json())
+    componentDidMount() {
+        cellSizer.init();
+        getData()
             .then(data => {
-                const longestContent = data.reduce((curr, next) => {
-                    let longestNext =  next.reduce(reduceFindLongest);
-                    return `${curr}`.length > `${longestNext}`.length ? curr : longestNext
-                }, 0);
-                this.canvasElement.font = `${this.state.fontSize}px ${this.state.fontFamily}`;
-                const width = this.canvasElement.measureText(longestContent).width;
+                const { colWidth, rowHeight } = this.getElementsSize(data);
                 this.setState({
                     data,
                     dataLength: data.length,
-                    containerHeight: data.length * elementHeight,
-                    elementWidth: width ? width + 10 : 0
-                });
+                    colWidth,
+                    rowHeight
+                })
             });
+    }
+    componentWillUnmount() {
+        cellSizer.clearDOM();
+    }
+
+    getElementsSize = (data) => {
+        const tempData = data && data.length ? data : this.state.data;
+        const { minIndex, maxIndex, colWidth, rowHeight } = this.state;
+        const newRowHeight = rowHeight.length ? rowHeight.slice(0) : new Array( maxIndex - minIndex);
+        const newColWidth = colWidth.length ? colWidth.slice(0) : new Array( tempData[0].length );
+        for (let i = (minIndex >= 0 && minIndex < tempData.length) ? minIndex : 0,
+                 length = maxIndex < tempData.length ? maxIndex : tempData.length;
+             i < length; i += 1) {
+            tempData[i].forEach((el, index) => {
+                const { width, height } = cellSizer.getSize(el);
+                if (newRowHeight[i] === undefined) {
+                    newRowHeight[i] = height;
+                } else {
+                    newRowHeight[i] = height > newRowHeight[i] ? height : newRowHeight[i];
+                }
+                if (newColWidth[index] === undefined) {
+                    newColWidth[index] = width;
+                } else {
+                    newColWidth[index] = width > newColWidth[index] ? width : newColWidth[index];
+                }
+            })
+        }
+        return { colWidth: newColWidth, rowHeight: newRowHeight };
+    }
+    resizeColumn = (columnIndex) => {
+
     }
 
     setTable = scrollbar => { this.table = scrollbar };
@@ -70,7 +85,7 @@ class Table extends PureComponent {
         });
     }
     handleVerticalScroll = () => {
-        const { top, displayedElementsCount } = this.state;
+        const { top, displayedElementsCount, elementHeight } = this.state;
         const scrollTop = (this.table && this.table.getScrollTop());
         const clientHeight = this.table.getClientHeight(); // move to state and reset it every time we meet context that's needs to bo re-sized
         const elementsPosition = top +  displayedElementsCount * elementHeight - clientHeight;
@@ -87,7 +102,7 @@ class Table extends PureComponent {
         }
     }
     setNextIndexes = (customStep) => {
-        const { maxIndex, dataLength, top, step, displayedElementsCount } = this.state;
+        const { maxIndex, dataLength, top, step, displayedElementsCount, elementHeight } = this.state;
         const elementsPerStep = customStep && customStep > step ? customStep : step;
         if (maxIndex + elementsPerStep < dataLength) {
             this.setState({
@@ -105,7 +120,7 @@ class Table extends PureComponent {
     }
 
     setPrevIndexes = (customStep) => {
-        const { minIndex, top, step, displayedElementsCount } = this.state;
+        const { minIndex, top, step, displayedElementsCount, elementHeight } = this.state;
         const elementsPerStep = customStep && customStep > step ? customStep : step;
         if (minIndex - elementsPerStep > 0) {
             this.setState({

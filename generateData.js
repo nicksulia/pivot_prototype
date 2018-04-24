@@ -25,8 +25,8 @@ const colLim = 20;
 for ( let i = 0; i < 500; i ++ ) {
     dataArray[i] = [];
     dataArray[i][0] = i;
-    for ( let j = 1; j < 20; j ++ ) {
-        dataArray[i][j] = randomNum(10000, true);
+    for ( let j = 1; j < 50; j ++ ) {
+        dataArray[i][j] = randomNum(1000000, true);
     }
 }
 fs.writeFileSync(path.resolve(__dirname, `./public/mockData/data.json`), JSON.stringify(dataArray), fileFormat);

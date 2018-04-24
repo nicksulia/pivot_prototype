@@ -1,6 +1,4 @@
 .row {
-    display: flex;
+    display: inline-flex;
     flex-shrink: 0;
-    flex-wrap: nowrap;
-    flex-direction: row;
 }

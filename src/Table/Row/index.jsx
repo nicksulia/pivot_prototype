@@ -6,37 +6,38 @@ class Row extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            style: {
-                width: props.elements ? props.elements.length * props.elementWidth : 0
-            },
             elements:  props.elements
             && props.elements.length
-            && this.renderElements(props.elements)
+            && this.renderElements(props),
+            style: {
+
+            }
         };
     }
     componentWillReceiveProps(nextProps) {
-        if (nextProps.elements !== this.props.elements || nextProps.width !== this.props.width) {
-            const elements = this.renderElements(nextProps.elements);
+        if (nextProps.elements !== this.props.elements
+            || nextProps.colWidth !== this.props.colWidth
+            || nextProps.height !== this.props.height) {
+            const elements = this.renderElements(nextProps);
             this.setState({
                 elements,
                 style: {
-                    width: nextProps.width
-                }
-            })
-        } else if (nextProps.width !== this.props.width) {
-            this.setState({
-                style: {
-                    width: nextProps.width
+                    height: nextProps.height,
+                    width: this.getTotalWidth(nextProps)
                 }
             })
         }
     }
 
-    renderCell = (el, index) => {
-        return <Cell width={this.props.elementWidth} data = {el} key = {`cell-${index}`}/>
-    };
-    renderElements = (elements = []) => {
-        return elements.map(this.renderCell)
+    getTotalWidth = (nextProps) => nextProps.colWidth.reduce((curr, next) => curr + next);
+
+    // renderCell = (el, index) => {
+    //     return <Cell width={this.props.colWidth[index]} data = {el} key = {`cell-${index}`}/>
+    // };
+    renderElements = (props) => {
+        return props.elements && props.elements.map((el, index) => {
+            return <Cell width={props.colWidth[index]} data = {el} key = {`cell-${index}`}/>
+        })
     };
     render() {
         return (

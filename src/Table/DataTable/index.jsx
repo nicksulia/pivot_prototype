@@ -106,14 +106,17 @@ class DataTable extends PureComponent {
     }
 
     renderNewRows = (rows, currIndex) => {
-        console.log(this.props.elementWidth)
-        return rows.map((row, index) => (<Row elementWidth={this.props.elementWidth} elements={row} key = {`row-${index + currIndex}`} />))
+        return rows.map((row, index) => (<Row colWidth={this.props.colWidth}
+                                              height = {this.props.rowHeight[`${index + currIndex}`]}
+                                              elements={row} key = {`row-${index + currIndex}`} />))
     }
 
     renderRows = (props, minIndex, maxIndex) => {
         return props.data.slice(minIndex, maxIndex).map(
             (row, index) =>
-                (<Row elementWidth={props.elementWidth} elements={row} key = {`row-${index + minIndex}`} />)
+                (<Row colWidth={props.colWidth}
+                      height = {this.props.rowHeight[`${index + minIndex}`]}
+                      elements={row} key = {`row-${index + minIndex}`} />)
         )
     }
 
