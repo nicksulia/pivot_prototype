@@ -1,6 +1,5 @@
 .row {
-    display: inline-flex;
+    display: flex;
     flex-shrink: 0;
     box-sizing: border-box;
-    margin-bottom: 2px;
 }

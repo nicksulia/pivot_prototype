@@ -5,133 +5,153 @@ import SideContainer from './SideContainer'
 import sideDataRender from './sidePanelDataRender.js';
 
 class DataTable extends PureComponent {
-
     constructor(props) {
         super(props);
         this.state = {
-            sideData: sideDataRender(props.data.length),
-            containerStyle: {
-                minHeight: props.containerHeight,
-            },
-            elContainerStyle:{
-                top: props.top
-            },
-            sidePanelStyle: {
-                top: props.top,
-                marginLeft: props.left
-            },
-            data: props.data,
-            renderedRows: props.dataLength ?
-                props.dataLength > props.displayedElementsCount ?
-                    this.renderRows(props, 0, props.displayedElementsCount - 1)
-                    : this.renderRows(props, 0, props.dataLength - 1)
-                : []
-        };
+            renderedRows: props.dataLength ? this.renderRows() : []
+        }
     }
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.data !== this.props.data) {
-            this.setNewState(nextProps);
-        } else if(nextProps.left !== this.props.left) {
-            this.updateByHorizontalScroll(nextProps);
-        } else if (nextProps.maxIndex !== this.props.maxIndex
-            && nextProps.maxIndex <= nextProps.dataLength
-            && nextProps.minIndex >= 0) {
-            this.updateElementsByIndex(nextProps);
-        }
-    }
-
-    updateByHorizontalScroll = ({ top, left }) => {
-        this.setState({
-            sidePanelStyle: {
-                top,
-                marginLeft: left
-            }
-        })
-    }
-
-    updateElementsByIndex = (nextProps) => {
-        const { maxIndex, displayedElementsCount, data, minIndex } = nextProps;
-        const oldMaxIndex = this.props.maxIndex;
-        const oldMinIndex = this.props.minIndex;
-        let renderedRows;
-        if (oldMinIndex > minIndex) {
-            if (oldMinIndex - minIndex < displayedElementsCount) {
-                const remainingRows = this.state.renderedRows.slice(maxIndex, oldMaxIndex);
-                const newRows = this.renderNewRows(
-                    data.slice(minIndex, maxIndex),
-                    minIndex
-                );
-                renderedRows = newRows.concat(remainingRows);
-            } else {
-                renderedRows = this.renderRows(nextProps, minIndex, maxIndex);
-            }
-        } else if (maxIndex - oldMaxIndex < displayedElementsCount) {
-            const remainingRows = this.state.renderedRows.slice(maxIndex - oldMaxIndex, displayedElementsCount);
-            const newRows = this.renderNewRows(
-                data.slice(oldMaxIndex, maxIndex),
-                oldMaxIndex
-            );
-            renderedRows = remainingRows.concat(newRows);
+            this.setState({
+                renderedRows: this.renderRows(nextProps)
+            })
         } else {
-            renderedRows = this.renderRows(nextProps, minIndex, maxIndex);
+            const { maxIndex, minIndex, displayedElementsCount, data } = nextProps;
+            const [ oldMaxIndex, oldMinIndex ] = [this.props.maxIndex, this.props.minIndex];
+            const { renderedRows } = this.state;
+            let newRenderedRows = [];
+            if (oldMinIndex > minIndex) {
+                if (oldMinIndex - minIndex < displayedElementsCount) {
+                    const remainingRows = renderedRows.slice(0, displayedElementsCount - (oldMinIndex - minIndex));
+                    const nextKeys = new Array(oldMinIndex - minIndex);
+                    renderedRows
+                        .slice(displayedElementsCount - (oldMinIndex - minIndex), displayedElementsCount)
+                        .forEach((element, index) => {
+                            nextKeys[index] = element.key;
+                        });
+                    const newRows = this.renderRowsWithCustomIndex(
+                        data.slice(minIndex, oldMinIndex),
+                        nextKeys,
+                        minIndex
+                    );
+                    newRenderedRows = newRows.concat(remainingRows);
+                } else {
+                    newRenderedRows = this.renderRows(nextProps, minIndex, maxIndex);
+                }
+            } else if (maxIndex - oldMaxIndex < displayedElementsCount) {
+                const remainingRows = renderedRows.slice(maxIndex - oldMaxIndex, displayedElementsCount);
+                const nextKeys = new Array(maxIndex - oldMaxIndex);
+                renderedRows
+                    .slice(0, maxIndex - oldMaxIndex)
+                    .forEach((element, index) => {
+                        nextKeys[index] = element.key;
+                    });
+                const newRows = this.renderRowsWithCustomIndex(
+                    data.slice(oldMaxIndex, maxIndex),
+                    nextKeys,
+                    oldMaxIndex
+                );
+                newRenderedRows = remainingRows.concat(newRows);
+            } else {
+                newRenderedRows = this.renderRows(nextProps, minIndex, maxIndex);
+            }
+            this.setState({
+                renderedRows: newRenderedRows
+            })
         }
-        this.setState({
-            elContainerStyle:{
-                top: nextProps.top
-            },
-            sidePanelStyle: {
-                top: nextProps.top,
-                marginLeft: nextProps.left
-            },
-            renderedRows,
-        })
     }
 
-    setNewState = (nextProps) => {
-        const { containerHeight, displayedElementsCount, data, top } = nextProps;
-        this.setState({
-            containerStyle:{
-                minHeight: containerHeight,
-            },
-            elContainerStyle:{
-                top: top
-            },
-            renderedRows: data.length > displayedElementsCount ?
-                this.renderRows(nextProps, 0, displayedElementsCount)
-                :
-                this.renderRows(nextProps, 0, data.length),
-            sideData: sideDataRender(data.length),
-            data
-        });
-    }
+    // updateByHorizontalScroll = ({ top, left }) => {
+    //     this.setState({
+    //         sidePanelStyle: {
+    //             top,
+    //             marginLeft: left
+    //         }
+    //     })
+    // }
+    //
+    // updateElementsByIndex = (nextProps) => {
+    //     const { maxIndex, displayedElementsCount, data, minIndex } = nextProps;
+    //     const oldMaxIndex = this.props.maxIndex;
+    //     const oldMinIndex = this.props.minIndex;
+    //     let renderedRows;
+    //     if (oldMinIndex > minIndex) {
+    //         if (oldMinIndex - minIndex < displayedElementsCount) {
+    //             const remainingRows = this.state.renderedRows.slice(maxIndex, oldMaxIndex);
+    //             const newRows = this.renderNewRows(
+    //                 data.slice(minIndex, maxIndex),
+    //                 minIndex
+    //             );
+    //             renderedRows = newRows.concat(remainingRows);
+    //         } else {
+    //             renderedRows = this.renderRows(nextProps, minIndex, maxIndex);
+    //         }
+    //     } else if (maxIndex - oldMaxIndex < displayedElementsCount) {
+    //         const remainingRows = this.state.renderedRows.slice(maxIndex - oldMaxIndex, displayedElementsCount);
+    //         const newRows = this.renderNewRows(
+    //             data.slice(oldMaxIndex, maxIndex),
+    //             oldMaxIndex
+    //         );
+    //         renderedRows = remainingRows.concat(newRows);
+    //     } else {
+    //         renderedRows = this.renderRows(nextProps, minIndex, maxIndex);
+    //     }
+    //     this.setState({
+    //         elContainerStyle:{
+    //             top: nextProps.top
+    //         },
+    //         sidePanelStyle: {
+    //             top: nextProps.top,
+    //             marginLeft: nextProps.left
+    //         },
+    //         renderedRows,
+    //     })
+    // }
 
-    renderNewRows = (rows, currIndex) => {
-        return rows.map((row, index) => (<Row
-                                            colWidth={this.props.colWidth}
-                                              index = {index + currIndex}
-                                              height = {this.props.rowHeight[`${index + currIndex}`]}
-                                              elements={row} key = {`row-${index + currIndex}`} />))
-    }
+    // setNewState = (nextProps) => {
+    //     const { containerHeight, displayedElementsCount, data, top } = nextProps;
+    //     this.setState({
+    //         containerStyle:{
+    //             minHeight: containerHeight,
+    //         },
+    //         elContainerStyle:{
+    //             top: top
+    //         },
+    //         renderedRows: data.length > displayedElementsCount ?
+    //             this.renderRows(nextProps, 0, displayedElementsCount)
+    //             :
+    //             this.renderRows(nextProps, 0, data.length),
+    //         sideData: sideDataRender(data.length),
+    //         data
+    //     });
+    // }
 
-    renderRows = (props, minIndex, maxIndex) => {
-        return props.data.slice(minIndex, maxIndex).map(
+    renderRowsWithCustomIndex = (data, nextKeys, minIndex) => {
+        const { rowHeight, colWidth } = this.props;
+        return data.length ? data.map(
             (row, index) =>
                 (<Row
-                    colWidth={props.colWidth}
-                      index = {index + minIndex}
-                      height = {props.rowHeight[`${index + minIndex}`]}
-                      elements={row} key = {`row-${index + minIndex}`} />)
-        )
+                    elements={row} rowHeight={rowHeight[minIndex + index]} columnWidth={colWidth} key = {nextKeys[index]} />)
+        ) : [];
+    }
+    renderRows = (props) => {
+        const { data, minIndex, maxIndex, rowHeight, colWidth } = props;
+        return data.length ? data.slice(minIndex, maxIndex).map(
+            (row, index) =>
+                (<Row
+                      elements={row} columnWidth={colWidth} rowHeight={rowHeight[minIndex + index]} key = {index} />)
+        ) : [];
     }
 
     render() {
-        const { minIndex, maxIndex, displayedElementsCount, dataLength } = this.props;
-        const { elContainerStyle, sidePanelStyle, containerStyle, sideData } = this.state;
+        const { renderedRows } = this.state;
+        const { tableStyle, floatContainerStyle } = this.props;
         return (
-            <div className="data-table" style = {containerStyle}>
-                {/*<SideContainer dataLength={dataLength} displayedElementsCount={displayedElementsCount} style={sidePanelStyle} minIndex={minIndex} maxIndex={maxIndex} data={sideData}/>*/}
-                <div className="data-table-container" style={elContainerStyle}>
-                    {this.state.renderedRows}
+            <div className="data-table" style={tableStyle}>
+                <div className="data-table-container" style={floatContainerStyle}>
+                    { renderedRows }
                 </div>
             </div>
         );

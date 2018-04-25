@@ -11,30 +11,42 @@ class Table extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            displayedElementsCount: 70,
-            step: 30,
+            displayedElementsCount: 50,
+            step: 20,
             minIndex: 0,
-            maxIndex: 70,
+            maxIndex: 50,
             data: [],
             dataLength: 0,
-            containerHeight: 10000,
-            top: 0,
+            tableStyle: {
+
+            },
+            floatContainerStyle: {
+                top: 0
+            },
             left: 0,
             elementHeight: 20,
             colWidth: [],
             rowHeight: []
         }
     }
+    sum = (curr, next) => curr + next;
+
     componentDidMount() {
         cellSizer.init();
         getData()
             .then(data => {
-                const [ colWidth, rowHeight ] = this.getElementsSize(data, this.state.minIndex, this.state.maxIndex);
+                const [ colWidth, rowHeight ] = this.getElementsSize(data, this.state.minIndex, data.length);
+                const height = rowHeight.reduce(this.sum);
+                cellSizer.clearDOM();
                 this.setState({
                     data,
                     dataLength: data.length,
                     colWidth,
-                    rowHeight
+                    rowHeight,
+                    tableStyle: {
+                        height: height
+                    },
+                    elementHeight: height/data.length
                 })
             });
     }
@@ -82,7 +94,8 @@ class Table extends PureComponent {
         });
     }
     handleVerticalScroll = () => {
-        const { top, displayedElementsCount, elementHeight } = this.state;
+        const { floatContainerStyle, displayedElementsCount, elementHeight } = this.state;
+        const top = floatContainerStyle.top;
         const scrollTop = (this.table && this.table.getScrollTop());
         const clientHeight = this.table.getClientHeight(); // move to state and reset it every time we meet context that's needs to bo re-sized
         const elementsPosition = top +  displayedElementsCount * elementHeight - clientHeight;
@@ -99,28 +112,27 @@ class Table extends PureComponent {
         }
     }
     setNextIndexes = (customStep) => {
-        const { maxIndex, dataLength, top, step, displayedElementsCount, elementHeight } = this.state;
+        const { maxIndex, dataLength, floatContainerStyle, step, displayedElementsCount, rowHeight } = this.state;
+        const top = floatContainerStyle.top;
         const elementsPerStep = customStep && customStep > step ? customStep : step;
-        let newMinIndex, newMaxIndex, newTop, colWidth, rowHeight;
+        let newMinIndex, newMaxIndex, newTop;
 
         if (maxIndex + elementsPerStep < dataLength || maxIndex < dataLength && dataLength - maxIndex < displayedElementsCount) {
             if (maxIndex + elementsPerStep < dataLength) {
 
-                newTop = top + elementsPerStep * elementHeight;
                 newMinIndex = maxIndex + elementsPerStep - displayedElementsCount;
                 newMaxIndex = maxIndex + elementsPerStep;
-                let newSize =
-                [ colWidth, rowHeight ] = this.getElementsSize(this.state.data, newMinIndex, newMaxIndex);
+                newTop = top + rowHeight.slice(maxIndex, newMaxIndex).reduce((curr, next) => curr + next);
+
             } else if (maxIndex < dataLength && dataLength - maxIndex < displayedElementsCount) {
-                newTop = top + (dataLength - maxIndex) * elementHeight;
                 newMinIndex = dataLength - displayedElementsCount;
                 newMaxIndex = dataLength;
-                [ colWidth, rowHeight ] = this.getElementsSize(this.state.data, newMinIndex, newMaxIndex);
+                newTop = this.table.getScrollHeight() - rowHeight.slice(newMinIndex, newMaxIndex).reduce((curr, next) => curr + next);
             }
             this.setState({
-                colWidth,
-                rowHeight,
-                top: newTop,
+                floatContainerStyle: {
+                    top: newTop,
+                },
                 minIndex: newMinIndex,
                 maxIndex: newMaxIndex,
             });
@@ -128,22 +140,25 @@ class Table extends PureComponent {
     }
 
     setPrevIndexes = (customStep) => {
-        const { minIndex, top, step, displayedElementsCount, elementHeight } = this.state;
+        const { minIndex, floatContainerStyle, step, displayedElementsCount, rowHeight } = this.state;
+        const top = floatContainerStyle.top;
         const elementsPerStep = customStep && customStep > step ? customStep : step;
-        let newMinIndex, newMaxIndex, newTop, colWidth, rowHeight;
+        let newMinIndex, newMaxIndex, newTop;
 
         if (minIndex - elementsPerStep > 0 || minIndex > 0 && minIndex - elementsPerStep <= 0) {
             if (minIndex - elementsPerStep > 0) {
-                newTop = top - elementsPerStep * elementHeight;
                 newMinIndex = minIndex - elementsPerStep;
                 newMaxIndex = minIndex - elementsPerStep + displayedElementsCount;
+                newTop = top - rowHeight.slice(newMinIndex, minIndex).reduce((curr, next) => curr + next);
             } else if (minIndex > 0 && minIndex - elementsPerStep <= 0) {
                 newTop = 0;
                 newMinIndex = 0;
                 newMaxIndex = displayedElementsCount;
             }
             this.setState({
-                top: newTop,
+                floatContainerStyle: {
+                    top: newTop,
+                },
                 minIndex: newMinIndex,
                 maxIndex: newMaxIndex,
             });
@@ -152,7 +167,7 @@ class Table extends PureComponent {
     renderTrackHorizontal = ({ style, ...props }) => (<div {...props} className="track-horizontal"/>);
     renderTrackVertical = ({ style, ...props }) => (<div {...props} className="track-vertical"/>);
 
-    scrollbarsStyle = {height: 700, width: 1000};
+    scrollbarsStyle = {height: 400, width: 1000};
 
     render() {
         return (

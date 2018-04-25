@@ -11,6 +11,7 @@
     "serve": "^6.5.6"
   },
   "scripts": {
+    "server": "serve -s build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",

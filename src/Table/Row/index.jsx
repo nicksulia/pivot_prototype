@@ -1,51 +1,29 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import Cell from '../Cell';
 import './style.css';
 
-class Row extends Component {
+class Row extends PureComponent {
     constructor(props) {
         super(props);
-        this.state = {
-            elements:  props.elements
-            && props.elements.length
-            && this.renderElements(props),
-            style: {
-                height: props.height
-            }
-        };
+        this.renderElements = this.renderElements.bind(this);
     }
     componentWillReceiveProps(nextProps) {
-        if (nextProps.elements !== this.props.elements) {
-            const elements = this.renderElements(nextProps);
-            this.setState({
-                style: {
-                    height: nextProps.height,
-                },
-                elements
-            });
-        } else if (nextProps.height !== this.props.height) {
-            this.setState({
-                style: {
-                    height: nextProps.height,
-                }
-            });
-        }
+
     }
-
-    getTotalWidth = (nextProps) => nextProps.colWidth.reduce((curr, next) => curr + next);
-
-    renderElements = (props) => {
-        return props.elements && props.elements.map((el, index) => {
+    renderElements() {
+        const { elements, columnWidth } = this.props;
+        return elements.length ? elements.map((el, index) => {
             return <Cell
-                width={props.colWidth[index]}
+                width = {columnWidth[index]}
                 data = {el}
                 key = {`cell-${index}`}/>
-        })
+        }) : <div>Loading...</div>
     };
     render() {
+        const { rowHeight } = this.props;
         return (
-            <div className="row" style={this.state.style}>
-                {this.state.elements}
+            <div className="row" style={{ height: rowHeight }}>
+                { this.renderElements() }
             </div>
         );
     }

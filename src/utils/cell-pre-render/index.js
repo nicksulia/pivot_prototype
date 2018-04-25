@@ -1,6 +1,7 @@
 const createContentWrapper = () => {
 
     const cell = document.createElement('div');
+    cell.style.border = '1px solid black';
     cell.style.display = 'table-cell';
     cell.style.whiteSpace = 'nowrap';
     cell.style.left = '-10000px';
