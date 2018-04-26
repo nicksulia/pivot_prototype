@@ -12,13 +12,13 @@ class Table extends PureComponent {
         super(props);
         this.state = {
             displayedElementsCount: 50,
-            step: 20,
+            step: 15,
             minIndex: 0,
             maxIndex: 50,
             data: [],
             dataLength: 0,
             tableStyle: {
-
+                height: 0
             },
             floatContainerStyle: {
                 top: 0
@@ -28,6 +28,8 @@ class Table extends PureComponent {
             colWidth: [],
             rowHeight: []
         }
+        this.elementClick = this.elementClick.bind(this);
+        this.resizeByLazyLoading = this.resizeByLazyLoading.bind(this);
     }
     sum = (curr, next) => curr + next;
 
@@ -52,6 +54,31 @@ class Table extends PureComponent {
     }
     componentWillUnmount() {
         cellSizer.clearDOM();
+    }
+
+    resizeByLazyLoading(width, height, col, row) {
+        if (width && height) {
+            const colWidth = this.state.colWidth.slice(0);
+            const rowHeight = this.state.rowHeight.slice(0);
+            colWidth[col] = width;
+            rowHeight[row] = height;
+            const newContainerHeight = this.state.tableStyle.height - this.state.rowHeight[row] + rowHeight[row];
+            this.setState({
+                colWidth,
+                rowHeight,
+                tableStyle: {
+                    height : newContainerHeight
+                }
+            })
+        }
+    }
+
+    elementClick(colIndex) {
+        const colWidth = this.state.colWidth.slice(0);
+        colWidth[colIndex] += 10;
+        this.setState({
+            colWidth
+        })
     }
 
     getElementsSize = (data, minIndex, maxIndex) => {
@@ -150,6 +177,7 @@ class Table extends PureComponent {
                 newMinIndex = minIndex - elementsPerStep;
                 newMaxIndex = minIndex - elementsPerStep + displayedElementsCount;
                 newTop = top - rowHeight.slice(newMinIndex, minIndex).reduce((curr, next) => curr + next);
+                newTop = newTop < 0 ? 0 : newTop;
             } else if (minIndex > 0 && minIndex - elementsPerStep <= 0) {
                 newTop = 0;
                 newMinIndex = 0;
@@ -177,7 +205,7 @@ class Table extends PureComponent {
                 style={this.scrollbarsStyle}
                 ref={this.setTable}
                 onScroll={this.handleScroll}>
-                <DataTable {...this.state} />
+                <DataTable {...this.state} elementClickHandle = {this.elementClick} resizeByLazyLoading = {this.resizeByLazyLoading} />
             </Scrollbars>
         );
     }

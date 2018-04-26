@@ -32,6 +32,7 @@ class DataTable extends PureComponent {
                             nextKeys[index] = element.key;
                         });
                     const newRows = this.renderRowsWithCustomIndex(
+                        nextProps,
                         data.slice(minIndex, oldMinIndex),
                         nextKeys,
                         minIndex
@@ -40,26 +41,49 @@ class DataTable extends PureComponent {
                 } else {
                     newRenderedRows = this.renderRows(nextProps, minIndex, maxIndex);
                 }
-            } else if (maxIndex - oldMaxIndex < displayedElementsCount) {
-                const remainingRows = renderedRows.slice(maxIndex - oldMaxIndex, displayedElementsCount);
-                const nextKeys = new Array(maxIndex - oldMaxIndex);
-                renderedRows
-                    .slice(0, maxIndex - oldMaxIndex)
+                this.setState({
+                    renderedRows: newRenderedRows
+                })
+            } else {
+                if (maxIndex - oldMaxIndex < displayedElementsCount) {
+                    const remainingRows = renderedRows.slice(maxIndex - oldMaxIndex, displayedElementsCount);
+                    const nextKeys = new Array(maxIndex - oldMaxIndex);
+                    renderedRows
+                        .slice(0, maxIndex - oldMaxIndex)
+                        .forEach((element, index) => {
+                            nextKeys[index] = element.key;
+                        });
+                    const newRows = this.renderRowsWithCustomIndex(
+                        nextProps,
+                        data.slice(oldMaxIndex, maxIndex),
+                        nextKeys,
+                        oldMaxIndex
+                    );
+                    newRenderedRows = remainingRows.concat(newRows);
+                } else {
+                    newRenderedRows = this.renderRows(nextProps, minIndex, maxIndex);
+                }
+                this.setState({
+                    renderedRows: newRenderedRows
+                })
+            }
+            if (nextProps.colWidth.length
+                && this.props.colWidth.length
+                && nextProps.colWidth !== this.props.colWidth) {
+                const nextKeys = new Array(nextProps.displayedElementsCount);
+                this.state.renderedRows
                     .forEach((element, index) => {
                         nextKeys[index] = element.key;
                     });
-                const newRows = this.renderRowsWithCustomIndex(
-                    data.slice(oldMaxIndex, maxIndex),
+                const renderedRows = this.renderRowsWithCustomIndex(nextProps,
+                    data.slice(nextProps.minIndex, nextProps.maxIndex),
                     nextKeys,
-                    oldMaxIndex
-                );
-                newRenderedRows = remainingRows.concat(newRows);
-            } else {
-                newRenderedRows = this.renderRows(nextProps, minIndex, maxIndex);
+                    nextProps.minIndex);
+                this.setState({
+                    renderedRows
+                });
             }
-            this.setState({
-                renderedRows: newRenderedRows
-            })
+
         }
     }
 
@@ -127,21 +151,20 @@ class DataTable extends PureComponent {
     //         data
     //     });
     // }
-
-    renderRowsWithCustomIndex = (data, nextKeys, minIndex) => {
-        const { rowHeight, colWidth } = this.props;
+    renderRowsWithCustomIndex = (nextProps, data, nextKeys, minIndex) => {
+        const { rowHeight, colWidth, elementClickHandle, resizeByLazyLoading } = nextProps;
         return data.length ? data.map(
             (row, index) =>
                 (<Row
-                    elements={row} rowHeight={rowHeight[minIndex + index]} columnWidth={colWidth} key = {nextKeys[index]} />)
+                    elements={row} resizeCell={resizeByLazyLoading} onElementClick={elementClickHandle} index={minIndex + index} rowHeight={rowHeight[minIndex + index]} columnWidth={colWidth} key = {nextKeys[index]} />)
         ) : [];
     }
     renderRows = (props) => {
-        const { data, minIndex, maxIndex, rowHeight, colWidth } = props;
+        const { data, minIndex, maxIndex, rowHeight, colWidth, elementClickHandle, resizeByLazyLoading } = props;
         return data.length ? data.slice(minIndex, maxIndex).map(
             (row, index) =>
                 (<Row
-                      elements={row} columnWidth={colWidth} rowHeight={rowHeight[minIndex + index]} key = {index} />)
+                      elements={row} resizeCell={resizeByLazyLoading} onElementClick={elementClickHandle} index={minIndex + index} columnWidth={colWidth} rowHeight={rowHeight[minIndex + index]} key = {index} />)
         ) : [];
     }
 

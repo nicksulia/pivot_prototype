@@ -1,17 +1,105 @@
 import React  from 'react';
 import './style.css';
 
-const Cell = ({ data, width }) => {
-    const style = { width };
-    const html = {
-        __html: data
+// const Cell = ({ data, width, onClick, index }) => {
+//     const style = { width };
+//     const html = {
+//         __html: data
+//     }
+//     const click = () => {
+//         onClick(index);
+//     };
+//     return (
+//         <div
+//             onClick={click}
+//             className="table-cell"
+//             style={style}
+//             dangerouslySetInnerHTML = {html}/>
+//     );
+//
+// };
+
+class Cell extends React.PureComponent {
+    constructor(props) {
+        super(props);
+        this.state = {
+            style : {
+                width: props.width
+            },
+            html : {
+                __html: props.data
+            }
+        }
     }
-    return (
-        <div
-            className="table-cell"
-            style={style}
-            dangerouslySetInnerHTML = {html}/>
-    );
+    componentDidMount() {
+        if (this.isContainsImg) {
+            this.isContainsImg = false;
+            this.handleImgLoad();
+        }
+    }
+    componentDidUpdate() {
+        if (this.isContainsImg) {
+            this.isContainsImg = false;
+            this.handleImgLoad();
+        }
+    }
+    handleImgLoad = () => {
+        const images = this.container.getElementsByTagName('img');
+        if (!this.images) {
+            this.images = [];
+        }
+        for (let i = 0; i < images.length; i++) {
+            images[i].addEventListener('load', (e) => {
+                const [width, height] = [ e.target.offsetWidth, e.target.offsetHeight ];
+                if (!this.images[i]) {
+                    this.images[i] = images[i];
+                    this.props.resizeCell( width, height, this.props.colIndex, this.props.rowIndex);
+                }
+                if (this.images[i].src !== images[i].src) {
+                    this.images[i] = images[i];
+                    this.props.resizeCell( width, height, this.props.colIndex, this.props.rowIndex);
+                } else {
+                    this.props.resizeCell( this.props.width, height, this.props.colIndex, this.props.rowIndex);
+                }
+            })
+        }
+    };
+    componentWillMount() {
+        if ((""+this.props.data).indexOf("<img") > -1) {
+            this.isContainsImg = true;
+        }
+    }
+    componentWillReceiveProps(newProps) {
+        if (this.props.data !== newProps.data && (""+newProps.data).indexOf("<img") > -1) {
+            this.isContainsImg = true;
+        }
+        this.setState({
+            style : {
+                width: newProps.width
+            },
+            html : {
+                __html: newProps.data
+            }
+        })
+    }
+
+    click = () => {
+        this.props.onClick(this.props.colIndex);
+    };
+    setRef = div => {
+        if (div) this.container = div;
+    };
+    render() {
+        return (
+            <div
+                ref={this.setRef}
+                onClick={this.click}
+                className="table-cell"
+                style={this.state.style}
+                dangerouslySetInnerHTML = {this.state.html}/>
+        );
+    }
+
 };
 
 export default Cell;
