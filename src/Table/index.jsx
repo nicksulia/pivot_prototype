@@ -60,8 +60,8 @@ class Table extends PureComponent {
         if (width && height) {
             const colWidth = this.state.colWidth.slice(0);
             const rowHeight = this.state.rowHeight.slice(0);
-            colWidth[col] = width;
-            rowHeight[row] = height;
+            colWidth[col] = colWidth[col] > width ? colWidth[col] : width;
+            rowHeight[row] = rowHeight[row] > height ? rowHeight[row] : height;
             const newContainerHeight = this.state.tableStyle.height - this.state.rowHeight[row] + rowHeight[row];
             this.setState({
                 colWidth,

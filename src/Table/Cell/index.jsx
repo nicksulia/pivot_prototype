@@ -1,5 +1,9 @@
 import React  from 'react';
 import './style.css';
+import elementResizeDetectorMaker from "element-resize-detector";
+const erdUltraFast = elementResizeDetectorMaker({
+    strategy: "scroll"
+});
 
 // const Cell = ({ data, width, onClick, index }) => {
 //     const style = { width };
@@ -27,7 +31,7 @@ class Cell extends React.PureComponent {
                 width: props.width
             },
             html : {
-                __html: props.data
+                __html: `<div class='cell-${props.colIndex}-${props.rowIndex}' style='height: auto; width: auto; display: inline-block;'>`+ props.data + "</div>"
             }
         }
     }
@@ -44,25 +48,28 @@ class Cell extends React.PureComponent {
         }
     }
     handleImgLoad = () => {
-        const images = this.container.getElementsByTagName('img');
-        if (!this.images) {
-            this.images = [];
-        }
-        for (let i = 0; i < images.length; i++) {
-            images[i].addEventListener('load', (e) => {
-                const [width, height] = [ e.target.offsetWidth, e.target.offsetHeight ];
-                if (!this.images[i]) {
-                    this.images[i] = images[i];
-                    this.props.resizeCell( width, height, this.props.colIndex, this.props.rowIndex);
-                }
-                if (this.images[i].src !== images[i].src) {
-                    this.images[i] = images[i];
-                    this.props.resizeCell( width, height, this.props.colIndex, this.props.rowIndex);
-                } else {
-                    this.props.resizeCell( this.props.width, height, this.props.colIndex, this.props.rowIndex);
-                }
-            })
-        }
+        const contentContainer = this.container.getElementsByClassName(`cell-${this.props.colIndex}-${this.props.rowIndex}`)[0];
+        erdUltraFast.listenTo(contentContainer, (el) => {
+            this.props.resizeCell( el.offsetWidth, el.offsetHeight, this.props.colIndex, this.props.rowIndex);
+        })
+        // if (!this.images) {
+        //     this.images = [];
+        // }
+        // for (let i = 0; i < images.length; i++) {
+        //     images[i].addEventListener('load', (e) => {
+        //         const [width, height] = [ e.target.offsetWidth, e.target.offsetHeight ];
+        //         if (!this.images[i]) {
+        //             this.images[i] = images[i];
+        //             this.props.resizeCell( width, height, this.props.colIndex, this.props.rowIndex);
+        //         }
+        //         if (this.images[i].src !== images[i].src) {
+        //             this.images[i] = images[i];
+        //             this.props.resizeCell( width, height, this.props.colIndex, this.props.rowIndex);
+        //         } else {
+        //             this.props.resizeCell( this.props.width, height, this.props.colIndex, this.props.rowIndex);
+        //         }
+        //     })
+        // }
     };
     componentWillMount() {
         if ((""+this.props.data).indexOf("<img") > -1) {
@@ -78,7 +85,7 @@ class Cell extends React.PureComponent {
                 width: newProps.width
             },
             html : {
-                __html: newProps.data
+                __html: `<div class='cell-${newProps.colIndex}-${newProps.rowIndex}' style='height: auto; width: auto; display: inline-block;'>`+ newProps.data + "</div>"
             }
         })
     }
