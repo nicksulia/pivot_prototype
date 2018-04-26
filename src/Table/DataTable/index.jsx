@@ -152,19 +152,19 @@ class DataTable extends PureComponent {
     //     });
     // }
     renderRowsWithCustomIndex = (nextProps, data, nextKeys, minIndex) => {
-        const { rowHeight, colWidth, elementClickHandle, resizeByLazyLoading } = nextProps;
+        const { rowHeight, colWidth, elementClickHandle, resizeByLazyLoading, cellSizer } = nextProps;
         return data.length ? data.map(
             (row, index) =>
                 (<Row
-                    elements={row} resizeCell={resizeByLazyLoading} onElementClick={elementClickHandle} index={minIndex + index} rowHeight={rowHeight[minIndex + index]} columnWidth={colWidth} key = {nextKeys[index]} />)
+                    elements={row} cellSizer={cellSizer} resizeCell={resizeByLazyLoading} onElementClick={elementClickHandle} index={minIndex + index} rowHeight={rowHeight[minIndex + index]} columnWidth={colWidth} key = {nextKeys[index]} />)
         ) : [];
     }
     renderRows = (props) => {
-        const { data, minIndex, maxIndex, rowHeight, colWidth, elementClickHandle, resizeByLazyLoading } = props;
+        const { data, minIndex, maxIndex, rowHeight, colWidth, elementClickHandle, resizeByLazyLoading, cellSizer } = props;
         return data.length ? data.slice(minIndex, maxIndex).map(
             (row, index) =>
                 (<Row
-                      elements={row} resizeCell={resizeByLazyLoading} onElementClick={elementClickHandle} index={minIndex + index} columnWidth={colWidth} rowHeight={rowHeight[minIndex + index]} key = {index} />)
+                      elements={row} cellSizer={cellSizer} resizeCell={resizeByLazyLoading} onElementClick={elementClickHandle} index={minIndex + index} columnWidth={colWidth} rowHeight={rowHeight[minIndex + index]} key = {index} />)
         ) : [];
     }
 

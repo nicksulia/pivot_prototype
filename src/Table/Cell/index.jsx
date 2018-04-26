@@ -45,42 +45,38 @@ class Cell extends React.PureComponent {
     }
     handleImgLoad = () => {
         const images = this.container.getElementsByTagName('img');
-        if (!this.images) {
-            this.images = [];
-        }
         for (let i = 0; i < images.length; i++) {
-            images[i].addEventListener('load', (e) => {
-                const [width, height] = [ e.target.offsetWidth, e.target.offsetHeight ];
-                if (!this.images[i]) {
-                    this.images[i] = images[i];
-                    this.props.resizeCell( width, height, this.props.colIndex, this.props.rowIndex);
-                }
-                if (this.images[i].src !== images[i].src) {
-                    this.images[i] = images[i];
-                    this.props.resizeCell( width, height, this.props.colIndex, this.props.rowIndex);
-                } else {
-                    this.props.resizeCell( this.props.width, height, this.props.colIndex, this.props.rowIndex);
-                }
-            })
+            images[i].addEventListener('load',() => {
+                const [ width, height ] = [ this.container.offsetWidth, this.container.offsetHeight ];
+                this.props.resizeCell( width, height, this.props.colIndex, this.props.rowIndex);
+            });
         }
     };
-    componentWillMount() {
-        if ((""+this.props.data).indexOf("<img") > -1) {
-            this.isContainsImg = true;
-        }
-    }
+
     componentWillReceiveProps(newProps) {
         if (this.props.data !== newProps.data && (""+newProps.data).indexOf("<img") > -1) {
             this.isContainsImg = true;
+            this.setState({
+                style : {
+                    width: 'auto'
+                },
+                html : {
+                    __html: newProps.data
+                }
+            })
+            return;
+        } else {
+            this.setState({
+                style : {
+                    width: newProps.width
+                },
+                html : {
+                    __html: newProps.data
+                }
+            })
         }
-        this.setState({
-            style : {
-                width: newProps.width
-            },
-            html : {
-                __html: newProps.data
-            }
-        })
+
+
     }
 
     click = () => {

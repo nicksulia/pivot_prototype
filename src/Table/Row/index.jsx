@@ -31,6 +31,7 @@ class Row extends PureComponent {
             const renderedCells = this.state.renderedCells.slice(0);
             renderedCells[changedIndexWidth] =
                 (<Cell
+                    cellSizer={nextProps.cellSizer}
                     resizeCell = {nextProps.resizeCell}
                     width = {nextProps.columnWidth[changedIndexWidth]}
                     data = {nextProps.elements[changedIndexWidth]}
@@ -46,9 +47,10 @@ class Row extends PureComponent {
     }
 
     renderElements(props) {
-        const { elements, columnWidth, onElementClick, resizeCell, index } = props;
+        const { elements, columnWidth, onElementClick, resizeCell, index, cellSizer } = props;
         return elements.length ? elements.map((el, i) => {
             return <Cell
+                cellSizer={cellSizer}
                 resizeCell = {resizeCell}
                 width = {columnWidth[i]}
                 data = {el}
@@ -62,7 +64,7 @@ class Row extends PureComponent {
         const { rowHeight } = this.props;
         const { renderedCells } = this.state;
         return (
-            <div className="row" style={{ height: rowHeight }}>
+            <div className="row">
                 { renderedCells }
             </div>
         );

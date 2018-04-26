@@ -52,9 +52,9 @@ class Table extends PureComponent {
                 })
             });
     }
-    componentWillUnmount() {
-        cellSizer.clearDOM();
-    }
+    // componentWillUnmount() {
+    //     cellSizer.clearDOM();
+    // }
 
     resizeByLazyLoading(width, height, col, row) {
         if (width && height) {
@@ -205,7 +205,7 @@ class Table extends PureComponent {
                 style={this.scrollbarsStyle}
                 ref={this.setTable}
                 onScroll={this.handleScroll}>
-                <DataTable {...this.state} elementClickHandle = {this.elementClick} resizeByLazyLoading = {this.resizeByLazyLoading} />
+                <DataTable cellSizer={cellSizer} {...this.state} elementClickHandle = {this.elementClick} resizeByLazyLoading = {this.resizeByLazyLoading} />
             </Scrollbars>
         );
     }
