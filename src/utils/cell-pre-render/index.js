@@ -14,7 +14,7 @@ const createContentWrapper = () => {
 export default class CellRenderer {
     _rendererWrapper = createContentWrapper();
     getSize = (content = '') => {
-        this._rendererWrapper.innerHTML = content;
+        this._rendererWrapper.textContent = content;
         const size = {
             height: this._rendererWrapper.offsetHeight,
             width: this._rendererWrapper.offsetWidth

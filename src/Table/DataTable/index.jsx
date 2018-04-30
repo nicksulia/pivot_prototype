@@ -11,7 +11,6 @@ class DataTable extends PureComponent {
             renderedRows: props.dataLength ? this.renderRows() : []
         }
     }
-
     componentWillReceiveProps(nextProps) {
         if (nextProps.data !== this.props.data) {
             this.setState({
@@ -87,84 +86,34 @@ class DataTable extends PureComponent {
         }
     }
 
-    // updateByHorizontalScroll = ({ top, left }) => {
-    //     this.setState({
-    //         sidePanelStyle: {
-    //             top,
-    //             marginLeft: left
-    //         }
-    //     })
-    // }
-    //
-    // updateElementsByIndex = (nextProps) => {
-    //     const { maxIndex, displayedElementsCount, data, minIndex } = nextProps;
-    //     const oldMaxIndex = this.props.maxIndex;
-    //     const oldMinIndex = this.props.minIndex;
-    //     let renderedRows;
-    //     if (oldMinIndex > minIndex) {
-    //         if (oldMinIndex - minIndex < displayedElementsCount) {
-    //             const remainingRows = this.state.renderedRows.slice(maxIndex, oldMaxIndex);
-    //             const newRows = this.renderNewRows(
-    //                 data.slice(minIndex, maxIndex),
-    //                 minIndex
-    //             );
-    //             renderedRows = newRows.concat(remainingRows);
-    //         } else {
-    //             renderedRows = this.renderRows(nextProps, minIndex, maxIndex);
-    //         }
-    //     } else if (maxIndex - oldMaxIndex < displayedElementsCount) {
-    //         const remainingRows = this.state.renderedRows.slice(maxIndex - oldMaxIndex, displayedElementsCount);
-    //         const newRows = this.renderNewRows(
-    //             data.slice(oldMaxIndex, maxIndex),
-    //             oldMaxIndex
-    //         );
-    //         renderedRows = remainingRows.concat(newRows);
-    //     } else {
-    //         renderedRows = this.renderRows(nextProps, minIndex, maxIndex);
-    //     }
-    //     this.setState({
-    //         elContainerStyle:{
-    //             top: nextProps.top
-    //         },
-    //         sidePanelStyle: {
-    //             top: nextProps.top,
-    //             marginLeft: nextProps.left
-    //         },
-    //         renderedRows,
-    //     })
-    // }
-
-    // setNewState = (nextProps) => {
-    //     const { containerHeight, displayedElementsCount, data, top } = nextProps;
-    //     this.setState({
-    //         containerStyle:{
-    //             minHeight: containerHeight,
-    //         },
-    //         elContainerStyle:{
-    //             top: top
-    //         },
-    //         renderedRows: data.length > displayedElementsCount ?
-    //             this.renderRows(nextProps, 0, displayedElementsCount)
-    //             :
-    //             this.renderRows(nextProps, 0, data.length),
-    //         sideData: sideDataRender(data.length),
-    //         data
-    //     });
-    // }
     renderRowsWithCustomIndex = (nextProps, data, nextKeys, minIndex) => {
-        const { rowHeight, colWidth, elementClickHandle, resizeByLazyLoading } = nextProps;
+        const { rowHeight, colWidth, elementClickHandle, resizeCellByContent, resizeDetector } = nextProps;
         return data.length ? data.map(
             (row, index) =>
                 (<Row
-                    elements={row} resizeCell={resizeByLazyLoading} onElementClick={elementClickHandle} index={minIndex + index} rowHeight={rowHeight[minIndex + index]} columnWidth={colWidth} key = {nextKeys[index]} />)
+                    elements={row}
+                    resizeDetector={resizeDetector}
+                    resizeCellByContent={resizeCellByContent}
+                    onElementClick={elementClickHandle}
+                    index={minIndex + index}
+                    rowHeight={rowHeight[minIndex + index]}
+                    columnWidth={colWidth}
+                    key = {nextKeys[index]} />)
         ) : [];
     }
     renderRows = (props) => {
-        const { data, minIndex, maxIndex, rowHeight, colWidth, elementClickHandle, resizeByLazyLoading } = props;
+        const { data, minIndex, maxIndex, rowHeight, colWidth, elementClickHandle, resizeCellByContent, resizeDetector } = props;
         return data.length ? data.slice(minIndex, maxIndex).map(
             (row, index) =>
                 (<Row
-                      elements={row} resizeCell={resizeByLazyLoading} onElementClick={elementClickHandle} index={minIndex + index} columnWidth={colWidth} rowHeight={rowHeight[minIndex + index]} key = {index} />)
+                      elements={row}
+                      resizeDetector={resizeDetector}
+                      resizeCellByContent={resizeCellByContent}
+                      onElementClick={elementClickHandle}
+                      index={minIndex + index}
+                      columnWidth={colWidth}
+                      rowHeight={rowHeight[minIndex + index]}
+                      key = {index} />)
         ) : [];
     }
 

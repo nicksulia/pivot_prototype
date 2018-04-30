@@ -22,6 +22,9 @@ class Row extends PureComponent {
     componentWillReceiveProps(nextProps) {
         if (nextProps.index !== this.props.index) {
             this.setState({
+                style: {
+                    height: nextProps.rowHeight
+                },
                 renderedCells: this.renderElements(nextProps)
             });
             return;
@@ -31,27 +34,32 @@ class Row extends PureComponent {
             const renderedCells = this.state.renderedCells.slice(0);
             renderedCells[changedIndexWidth] =
                 (<Cell
-                    resizeCell = {nextProps.resizeCell}
+                    resizeCellByContent={nextProps.resizeCellByContent}
                     width = {nextProps.columnWidth[changedIndexWidth]}
                     data = {nextProps.elements[changedIndexWidth]}
+                    resizeDetector={nextProps.resizeDetector}
                     rowIndex={nextProps.index}
                     colIndex = {changedIndexWidth}
                     onClick={nextProps.onElementClick}
                     key = {`cell-${changedIndexWidth}`}
                 />);
             this.setState({
+                style: {
+                    height: nextProps.rowHeight
+                },
                 renderedCells
             })
         }
     }
 
     renderElements(props) {
-        const { elements, columnWidth, onElementClick, resizeCell, index } = props;
+        const { elements, columnWidth, resizeCellByContent, index, resizeDetector, onElementClick } = props;
         return elements.length ? elements.map((el, i) => {
             return <Cell
-                resizeCell = {resizeCell}
+                resizeCellByContent = {resizeCellByContent}
                 width = {columnWidth[i]}
                 data = {el}
+                resizeDetector={resizeDetector}
                 rowIndex={index}
                 colIndex={i}
                 onClick={onElementClick}
@@ -59,10 +67,9 @@ class Row extends PureComponent {
         }) : <div>Loading...</div>
     };
     render() {
-        const { rowHeight } = this.props;
-        const { renderedCells } = this.state;
+        const { renderedCells, style } = this.state;
         return (
-            <div className="row" style={{ height: rowHeight }}>
+            <div className="row" style={style}>
                 { renderedCells }
             </div>
         );

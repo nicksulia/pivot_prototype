@@ -11,7 +11,8 @@
     "react-resize-detector": "^2.3.0",
     "react-scripts": "1.1.4",
     "resize-observer-polyfill": "^1.5.0",
-    "serve": "^6.5.6"
+    "serve": "^6.5.6",
+    "underscore": "^1.9.0"
   },
   "scripts": {
     "server": "serve -s build",
