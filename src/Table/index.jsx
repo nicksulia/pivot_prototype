@@ -5,7 +5,8 @@ import Scrollbars from 'react-custom-scrollbars';
 import CellPreRender from '../utils/cell-pre-render';
 import { getData } from '../utils/api/configAPI.js';
 import elementResizeDetectorMaker from "element-resize-detector";
-//import _ from 'underscore';
+import SideDataPanelParser from '../utils/api/parseTreeToMatrix.js';
+const parser = new SideDataPanelParser();
 const erdUltraFast = elementResizeDetectorMaker({
     strategy: "scroll"
 });
@@ -59,23 +60,27 @@ class Table extends PureComponent {
     sum(curr, next) { return curr + next; }
 
     componentDidMount() {
+
         cellSizer.init();
-        getData()
-            .then(data => {
-                const [ colWidth, rowHeight ] = this.getElementsSize(data, this.state.minIndex, data.length);
-                const height = rowHeight.reduce(this.sum);
-                cellSizer.clearDOM();
-                this.setState({
-                    data,
-                    dataLength: data.length,
-                    colWidth,
-                    rowHeight,
-                    tableStyle: {
-                        height: height
-                    },
-                    elementHeight: height/data.length
-                })
-            });
+        Promise.all([getData(), parser.getData()]).then(values => {
+            console.log(values);
+        })
+
+            // .then(data => {
+            //     const [ colWidth, rowHeight ] = this.getElementsSize(data, this.state.minIndex, data.length);
+            //     const height = rowHeight.reduce(this.sum);
+            //     cellSizer.clearDOM();
+            //     this.setState({
+            //         data,
+            //         dataLength: data.length,
+            //         colWidth,
+            //         rowHeight,
+            //         tableStyle: {
+            //             height: height
+            //         },
+            //         elementHeight: height/data.length
+            //     })
+            // });
     }
 
     componentDidUpdate() {
