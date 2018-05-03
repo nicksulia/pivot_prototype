@@ -1,13 +1,17 @@
 import React  from 'react';
 import './style.css';
 
-const Cell = ({ data, width, onClick, colIndex }) => {
+const Cell = ({ data, width, onClick, colIndex, rowIndex }) => {
     const style = { width };
     // const html = {
     //     __html: data
     // }
-    const click = () => {
-        onClick(colIndex);
+    const click = (e) => {
+        if (e.button = 0) {
+            onClick(colIndex, rowIndex, 'left');
+        } else {
+            onClick(colIndex, rowIndex, 'right');
+        }
     };
     // return (
     //     <div

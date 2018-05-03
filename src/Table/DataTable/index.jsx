@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react';
 import Row from '../Row';
 import './style.css';
-import SideContainer from './SideContainer'
-import sideDataRender from './sidePanelDataRender.js';
 
 class DataTable extends PureComponent {
     constructor(props) {
@@ -119,13 +117,11 @@ class DataTable extends PureComponent {
 
     render() {
         const { renderedRows } = this.state;
-        const { tableStyle, floatContainerStyle } = this.props;
+        const { top, sideHeaderSize } = this.props;
         return (
-            <div className="data-table" style={tableStyle}>
-                <div className="data-table-container" style={floatContainerStyle}>
+                <div className="data-table-container" style={{ top, left: sideHeaderSize }}>
                     { renderedRows }
                 </div>
-            </div>
         );
     }
 }

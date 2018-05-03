@@ -2,16 +2,16 @@ import React, { PureComponent } from 'react';
 import DataTable from './DataTable';
 import './style.css';
 import Scrollbars from 'react-custom-scrollbars';
-import CellPreRender from '../utils/cell-pre-render';
+import { CellRenderer } from '../utils/cell-pre-render';
 import { getData } from '../utils/api/configAPI.js';
 import elementResizeDetectorMaker from "element-resize-detector";
 import SideDataPanelParser from '../utils/api/parseTreeToMatrix.js';
+import HeaderContainer from './HeaderContainer';
+const cellSizer = new CellRenderer();
 const parser = new SideDataPanelParser();
 const erdUltraFast = elementResizeDetectorMaker({
     strategy: "scroll"
 });
-
-const cellSizer = new CellPreRender();
 
 class Table extends PureComponent {
 
@@ -19,7 +19,7 @@ class Table extends PureComponent {
 
     renderTrackVertical = ({ style, ...props }) => (<div {...props} className="track-vertical"/>);
 
-    scrollbarsStyle = {height: 400, width: 1000};
+    scrollbarsStyle = {height: 600, width: 1200};
 
     clientHeight = null;
     scrollHeight = null;
@@ -33,54 +33,69 @@ class Table extends PureComponent {
             minIndex: 0,
             maxIndex: 50,
             data: [],
+            panelsData: [],
             dataLength: 0,
-            tableStyle: {
-                height: 0
-            },
-            floatContainerStyle: {
-                top: 0
-            },
+            height: 0,
+            top: 0,
             left: 0,
+            sideHeaderSize: 0,
+            topHeaderSize: 0,
             elementHeight: 20,
             colWidth: [],
+            sideColWidth: [],
             rowHeight: []
         };
 
         this.elementClick = this.elementClick.bind(this);
         this.resizeCellByContent = this.resizeCellByContent.bind(this);
-        this.getElementsSize = this.getElementsSize.bind(this);
         this.handleScroll = this.handleScroll.bind(this);
         this.handleHorizontalScroll = this.handleHorizontalScroll.bind(this);
         this.handleVerticalScroll = this.handleVerticalScroll.bind(this);
         this.setNextIndexes = this.setNextIndexes.bind(this);
         this.setPrevIndexes = this.setPrevIndexes.bind(this);
         this.sum = this.sum.bind(this);
+        this.setTable = this.setTable.bind(this);
     }
 
     sum(curr, next) { return curr + next; }
 
+    setTable(scrollbar) { this.table = scrollbar };
+
     componentDidMount() {
 
         cellSizer.init();
-        Promise.all([getData(), parser.getData()]).then(values => {
-            console.log(values);
-        })
-
-            // .then(data => {
-            //     const [ colWidth, rowHeight ] = this.getElementsSize(data, this.state.minIndex, data.length);
-            //     const height = rowHeight.reduce(this.sum);
-            //     cellSizer.clearDOM();
-            //     this.setState({
-            //         data,
-            //         dataLength: data.length,
-            //         colWidth,
-            //         rowHeight,
-            //         tableStyle: {
-            //             height: height
-            //         },
-            //         elementHeight: height/data.length
-            //     })
-            // });
+        Promise.all([getData(), parser.getData()])
+            .then(values => {
+                const [ colWidth, dataRowHeight ] =
+                    cellSizer.getElementsSize(
+                        values[0],
+                        this.state.minIndex,
+                        values[0].length,
+                        [],
+                        []
+                    );
+                const headerFormattedArr = parser.formatInHeader(values[1], 3);
+                const [sidePanelWIdth, rowHeight ] = cellSizer.getElementsSize(
+                    headerFormattedArr,
+                    this.state.minIndex,
+                    headerFormattedArr.length,
+                    [],
+                    dataRowHeight
+                );
+                const height = rowHeight.reduce(this.sum);
+                cellSizer.clearDOM();
+                this.setState({
+                    sideHeaderSize: sidePanelWIdth.reduce(this.sum),
+                    sideColWidth: sidePanelWIdth,
+                    panelsData: values[1],
+                    data: values[0],
+                    dataLength: values[0].length,
+                    colWidth,
+                    rowHeight,
+                    height,
+                    elementHeight: height/values[0].length
+                })
+            });
     }
 
     componentDidUpdate() {
@@ -95,67 +110,51 @@ class Table extends PureComponent {
             const rowHeight = this.state.rowHeight.slice(0);
             colWidth[col] = colWidth[col] > width ? colWidth[col] : width;
             rowHeight[row] = rowHeight[row] > height ? rowHeight[row] : height;
-            const newContainerHeight = this.state.tableStyle.height - this.state.rowHeight[row] + rowHeight[row];
+            const newContainerHeight = this.state.height - this.state.rowHeight[row] + rowHeight[row];
             this.setState({
                 colWidth,
                 rowHeight,
-                tableStyle: {
-                    height : newContainerHeight
-                }
+                height: newContainerHeight
             })
         }
     }
 
-    elementClick(colIndex) {
-        const colWidth = this.state.colWidth.slice(0);
-        colWidth[colIndex] += 10;
-        this.setState({
-            colWidth
-        })
-    }
-
-    getElementsSize(data, minIndex, maxIndex) {
-        const tempData = data && data.length ? data : this.state.data;
-        const { colWidth, rowHeight } = this.state;
-        const newRowHeight = rowHeight.length ? rowHeight.slice(0) : new Array( maxIndex - minIndex);
-        const newColWidth = colWidth.length ? colWidth.slice(0) : new Array( tempData[0].length );
-        for (let i = (minIndex >= 0 && minIndex < tempData.length) ? minIndex : 0,
-                 length = maxIndex < tempData.length ? maxIndex : tempData.length;
-             i < length; i += 1) {
-            tempData[i].forEach((el, index) => {
-                const { width, height } = cellSizer.getSize(el);
-                if (newRowHeight[i] === undefined) {
-                    newRowHeight[i] = height;
-                } else {
-                    newRowHeight[i] = height > newRowHeight[i] ? height : newRowHeight[i];
-                }
-                if (newColWidth[index] === undefined) {
-                    newColWidth[index] = width;
-                } else {
-                    newColWidth[index] = width > newColWidth[index] ? width : newColWidth[index];
-                }
+    elementClick(colIndex, rowIndex, clicked) {
+        if (clicked === 'left') {
+            const colWidth = this.state.colWidth.slice(0);
+            colWidth[colIndex] += 10;
+            this.setState({
+                colWidth
+            })
+        } else if (clicked === 'right') {
+            const rowHeight = this.state.rowHeight.slice(0);
+            rowHeight[rowIndex] += 10;
+            this.setState({
+                rowHeight
             })
         }
-        return [ newColWidth, newRowHeight ];
+
     }
 
-    setTable = scrollbar => { this.table = scrollbar };
     handleScroll(e) {
-        if (this.state.left !== e.target.scrollLeft) {
-            window.requestAnimationFrame(this.handleHorizontalScroll);
+        const left = e.target.scrollLeft;
+        if (this.state.left !== left) {
+            this.handleHorizontalScroll(left);
         } else {
             this.handleVerticalScroll(e);
         }
     }
 
-    handleHorizontalScroll() {
-        this.setState({
-            left: this.table.getScrollLeft()
-        });
+    handleHorizontalScroll(left) {
+        window.requestAnimationFrame(() => {
+            this.setState({
+                left
+            });
+        })
+
     }
     handleVerticalScroll(e) {
-        const { floatContainerStyle, displayedElementsCount, elementHeight } = this.state;
-        const top = floatContainerStyle.top;
+        const { top, displayedElementsCount, elementHeight } = this.state;
         const scrollTop = (e.target.scrollTop);
         const elementsPosition = top +  displayedElementsCount * elementHeight - this.clientHeight;
         const scrolledToBottomVirtual = scrollTop >= elementsPosition;
@@ -169,8 +168,7 @@ class Table extends PureComponent {
         }
     }
     setNextIndexes() {
-        const { maxIndex, dataLength, floatContainerStyle, step, displayedElementsCount, rowHeight } = this.state;
-        const top = floatContainerStyle.top;
+        const { maxIndex, dataLength, top, step, displayedElementsCount, rowHeight } = this.state;
         const elementsPerStep = this.scrollToElementsCount && this.scrollToElementsCount > step ? this.scrollToElementsCount : step;
         let newMinIndex, newMaxIndex, newTop;
 
@@ -187,9 +185,7 @@ class Table extends PureComponent {
                 newTop = this.scrollHeight - rowHeight.slice(newMinIndex, newMaxIndex).reduce((curr, next) => curr + next);
             }
             this.setState({
-                floatContainerStyle: {
-                    top: newTop,
-                },
+                top: newTop,
                 minIndex: newMinIndex,
                 maxIndex: newMaxIndex,
             });
@@ -197,8 +193,7 @@ class Table extends PureComponent {
     }
 
     setPrevIndexes() {
-        const { minIndex, floatContainerStyle, step, displayedElementsCount, rowHeight } = this.state;
-        const top = floatContainerStyle.top;
+        const { minIndex, top, step, displayedElementsCount, rowHeight } = this.state;
         const elementsPerStep = this.scrollToElementsCount && this.scrollToElementsCount > step ? this.scrollToElementsCount : step;
         let newMinIndex, newMaxIndex, newTop;
 
@@ -214,9 +209,7 @@ class Table extends PureComponent {
                 newMaxIndex = displayedElementsCount;
             }
             this.setState({
-                floatContainerStyle: {
-                    top: newTop,
-                },
+                top: newTop,
                 minIndex: newMinIndex,
                 maxIndex: newMaxIndex,
             });
@@ -224,11 +217,7 @@ class Table extends PureComponent {
     }
 
     render() {
-        // return (
-        //     <div ref={this.setTable} style={this.scrollbarsStyle} onScroll={this.handleScroll}>
-        //         <DataTable {...this.state} resizeDetector={erdUltraFast} elementClickHandle = {this.elementClick} resizeCellByContent = {this.resizeCellByContent} />
-        //     </div>
-        // );
+        const { height, panelsData, sideColWidth, rowHeight, sideHeaderSize, left } = this.state;
         return (
             <Scrollbars
                 renderTrackHorizontal={this.renderTrackHorizontal}
@@ -237,7 +226,21 @@ class Table extends PureComponent {
                 ref={this.setTable}
                 onScroll={this.handleScroll}
             >
-                <DataTable {...this.state} resizeDetector={erdUltraFast} elementClickHandle = {this.elementClick} resizeCellByContent = {this.resizeCellByContent} />
+                <div className="table-scroll-block" style={{ height }}>
+                    <HeaderContainer
+                         panelsData = {panelsData}
+                         sideColWidth = {sideColWidth}
+                         rowHeight = {rowHeight}
+                         sideHeaderSize = {sideHeaderSize}
+                         left={left}
+                    />
+                    <DataTable
+                        {...this.state}
+                        resizeDetector={erdUltraFast}
+                        elementClickHandle = {this.elementClick}
+                        resizeCellByContent = {this.resizeCellByContent}
+                    />
+                </div>
             </Scrollbars>
         );
     }

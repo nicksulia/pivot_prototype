@@ -1,0 +1,5 @@
+.header-cell {
+    border: 1px solid gray;
+    display: inline-block;
+    box-sizing: border-box;
+}

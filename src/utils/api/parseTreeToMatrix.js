@@ -3,17 +3,36 @@ const getData = () => {
         .then(res => res.json())
 };
 export default class Matrix {
-    data = null;
-    complete = false;
+    formatInHeader(structuredData, deepLevel = 1, isHorizontal) {
+        const finalArr = [];
+        for (let i = 0; i < deepLevel; i++){
+            finalArr[i] = [];
+            for (let j = i; j < structuredData.length; j += deepLevel ) {
+                finalArr[i] = finalArr[i].concat(structuredData[j]);
+            }
+        }
+        if (isHorizontal) {
+            return finalArr;
+        } else {
+            const verticalArr = [];
+            for (let i = 0, len = finalArr[0].length; i < len; i++) {
+                verticalArr[i] = [];
+                for (let j = 0; j < deepLevel; j++) {
+                    verticalArr[i][j] = finalArr[j][i];
+                }
+            }
+            return verticalArr;
+        }
+
+    }
+
     getData() {
-        return getData().then(data => { this.data = data; this.complete = true; return this.parseToMatrix(); });
+        return getData().then(data => this.parseToMatrix(data));
     }
-    isComplete() {
-        return this.complete;
-    }
-    parseToMatrix() {
+
+    parseToMatrix(data) {
         let resultArray = [];
-        this.data.forEach((headerRow) => {
+        data.forEach((headerRow) => {
             resultArray = resultArray.concat(this.objectParser(headerRow, [], 3));
         });
         return resultArray;
