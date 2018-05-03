@@ -6,6 +6,7 @@
     position: relative;
 }
 .table-scroll-block {
+    height: auto;
     position: relative;
 }
 .track-horizontal {

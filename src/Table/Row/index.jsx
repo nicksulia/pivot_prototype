@@ -22,33 +22,30 @@ class Row extends PureComponent {
     componentWillReceiveProps(nextProps) {
         if (nextProps.index !== this.props.index) {
             this.setState({
-                style: {
-                    height: nextProps.rowHeight
-                },
                 renderedCells: this.renderElements(nextProps)
             });
             return;
         }
-        const changedIndexWidth = findUpdatedWidth(this.props.columnWidth, nextProps.columnWidth);
-        if (changedIndexWidth !== null) {
-            const renderedCells = this.state.renderedCells.slice(0);
-            renderedCells[changedIndexWidth] =
-                (<Cell
-                    resizeCellByContent={nextProps.resizeCellByContent}
-                    width = {nextProps.columnWidth[changedIndexWidth]}
-                    data = {nextProps.elements[changedIndexWidth]}
-                    resizeDetector={nextProps.resizeDetector}
-                    rowIndex={nextProps.index}
-                    colIndex = {changedIndexWidth}
-                    onClick={nextProps.onElementClick}
-                    key = {`cell-${changedIndexWidth}`}
-                />);
-            this.setState({
-                style: {
-                    height: nextProps.rowHeight
-                },
-                renderedCells
-            })
+
+        if (this.props.columnWidth !== nextProps.columnWidth) {
+            const changedIndexWidth = findUpdatedWidth(this.props.columnWidth, nextProps.columnWidth);
+            if (changedIndexWidth !== null) {
+                const renderedCells = this.state.renderedCells.slice(0);
+                renderedCells[changedIndexWidth] =
+                    (<Cell
+                        resizeCellByContent={nextProps.resizeCellByContent}
+                        width = {nextProps.columnWidth[changedIndexWidth]}
+                        data = {nextProps.elements[changedIndexWidth]}
+                        resizeDetector={nextProps.resizeDetector}
+                        rowIndex={nextProps.index}
+                        colIndex = {changedIndexWidth}
+                        onClick={nextProps.onElementClick}
+                        key = {`cell-${changedIndexWidth}`}
+                    />);
+                this.setState({
+                    renderedCells
+                })
+            }
         }
     }
 
@@ -67,9 +64,10 @@ class Row extends PureComponent {
         }) : <div>Loading...</div>
     };
     render() {
-        const { renderedCells, style } = this.state;
+        const { renderedCells } = this.state;
+        const { rowHeight: height  } = this.props;
         return (
-            <div className="row" style={style}>
+            <div className="row" style={{ height }}>
                 { renderedCells }
             </div>
         );

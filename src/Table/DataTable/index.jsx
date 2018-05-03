@@ -64,9 +64,7 @@ class DataTable extends PureComponent {
                     renderedRows: newRenderedRows
                 })
             }
-            if (nextProps.colWidth.length
-                && this.props.colWidth.length
-                && nextProps.colWidth !== this.props.colWidth) {
+            if (nextProps.colWidth !== this.props.colWidth || nextProps.rowHeight !== this.props.rowHeight) {
                 const nextKeys = new Array(nextProps.displayedElementsCount);
                 this.state.renderedRows
                     .forEach((element, index) => {
@@ -80,7 +78,6 @@ class DataTable extends PureComponent {
                     renderedRows
                 });
             }
-
         }
     }
 

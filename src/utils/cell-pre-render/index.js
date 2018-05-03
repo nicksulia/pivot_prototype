@@ -2,12 +2,15 @@ const createContentWrapper = () => {
 
     const cell = document.createElement('div');
     cell.style.border = '1px solid black';
-    cell.style.display = 'table-cell';
+    cell.style.boxSizing = 'border-box';
+    cell.style.display = 'inline-block';
     cell.style.whiteSpace = 'nowrap';
     cell.style.left = '-10000px';
     cell.style.position = 'absolute';
     cell.style.top = '-10000px';
     cell.style.visibility = 'hidden';
+    cell.style.height = 'auto';
+    cell.style.width = 'auto';
 
     return cell;
 };
@@ -15,11 +18,10 @@ const createContentWrapper = () => {
     _rendererWrapper = createContentWrapper();
     _getSize = (content = '') => {
         this._rendererWrapper.textContent = content;
-        const size = {
-            height: this._rendererWrapper.offsetHeight,
-            width: this._rendererWrapper.offsetWidth
+        return {
+            height: this._rendererWrapper.offsetHeight + 1,
+            width: this._rendererWrapper.offsetWidth + 1
         };
-        return size;
     };
 
     init = () => {

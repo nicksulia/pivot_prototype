@@ -9,6 +9,11 @@ class HeaderRow extends PureComponent {
             cells: this.renderCells(props)
         }
     }
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            cells: this.renderCells(nextProps)
+        })
+    }
     renderCells = (props) => {
         const {data, height, width} = props;
         let value = data[0];

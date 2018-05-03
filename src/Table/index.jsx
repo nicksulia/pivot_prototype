@@ -120,19 +120,11 @@ class Table extends PureComponent {
     }
 
     elementClick(colIndex, rowIndex, clicked) {
-        if (clicked === 'left') {
-            const colWidth = this.state.colWidth.slice(0);
-            colWidth[colIndex] += 10;
-            this.setState({
-                colWidth
-            })
-        } else if (clicked === 'right') {
-            const rowHeight = this.state.rowHeight.slice(0);
-            rowHeight[rowIndex] += 10;
-            this.setState({
-                rowHeight
-            })
-        }
+        const rowHeight = this.state.rowHeight.slice(0);
+        rowHeight[rowIndex] += 10;
+        this.setState({
+            rowHeight
+        })
 
     }
 
@@ -217,7 +209,7 @@ class Table extends PureComponent {
     }
 
     render() {
-        const { height, panelsData, sideColWidth, rowHeight, sideHeaderSize, left } = this.state;
+        const { panelsData, sideColWidth, rowHeight, sideHeaderSize, left } = this.state;
         return (
             <Scrollbars
                 renderTrackHorizontal={this.renderTrackHorizontal}
@@ -226,7 +218,7 @@ class Table extends PureComponent {
                 ref={this.setTable}
                 onScroll={this.handleScroll}
             >
-                <div className="table-scroll-block" style={{ height }}>
+                <div className="table-scroll-block">
                     <HeaderContainer
                          panelsData = {panelsData}
                          sideColWidth = {sideColWidth}

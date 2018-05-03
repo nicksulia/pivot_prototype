@@ -10,11 +10,9 @@ class HeaderSection extends PureComponent {
         }
     }
     componentWillReceiveProps(nextProps) {
-        if (nextProps.data !== this.props.data) {
-            this.setState({
-                rows: this.renderRows(nextProps)
-            })
-        }
+        this.setState({
+            rows: this.renderRows(nextProps)
+        })
     }
     renderRows = (props) => {
         const { data, colWidth, rowHeight, minIndex, maxIndex } = props;

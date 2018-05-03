@@ -15,8 +15,47 @@ class HeaderContainer extends PureComponent {
             this.setState({
                 sections: this.renderAllSections(nextProps)
             })
+        } else if (nextProps.rowHeight !== this.props.rowHeight) {
+            const index = this.findChangedIndex(this.props.rowHeight, nextProps.rowHeight);
+            const { sectionIndex, min, max } = this.seekAndUpdate(index);
+            const updatedSection = this.updateSection(nextProps, sectionIndex, min, max );
+            const sections = this.state.sections.slice(0);
+            sections[sectionIndex] = updatedSection;
+            this.setState({
+                sections
+            });
         }
     }
+    findChangedIndex = (oldArr, newArr) => {
+        for (let i = 0, len = newArr.length; i < len; i++ ) {
+            if (oldArr[i] !== newArr[i]) return i;
+        }
+    };
+    seekAndUpdate = (index) => {
+        const { sections } = this.state;
+        for (let i = 0, len = sections.length; i < len; i++ ) {
+            let key = sections[i].key.split('-');
+            if (index >= key[0] && index < key[1]) {
+                return { sectionIndex: i, min: key[0], max: key[1] };
+            }
+        }
+    };
+    updateSection = (props, index, min, max) => {
+        const { panelsData, sideColWidth, rowHeight, sideHeaderSize } = props;
+        const targetIndex = index * 3;
+        return (
+            <HeaderSection
+                key = {`${min}-${max}`}
+                data = {[ panelsData[targetIndex], panelsData[targetIndex+1], panelsData[targetIndex+2] ]}
+                rowHeight = {rowHeight}
+                colWidth = {sideColWidth}
+                minIndex = { min }
+                maxIndex = { max }
+                width = { sideHeaderSize }
+            />
+        );
+    };
+
     renderAllSections = (props) => {
         const { panelsData, sideColWidth, rowHeight, sideHeaderSize } = props;
         const sectionArr = [];
