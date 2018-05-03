@@ -15,7 +15,7 @@ class HeaderContainer extends PureComponent {
             this.setState({
                 sections: this.renderAllSections(nextProps)
             })
-        } else if (nextProps.rowHeight !== this.props.rowHeight) {
+        } else if (!nextProps.isHorizontal && nextProps.rowHeight !== this.props.rowHeight) {
             const index = this.findChangedIndex(this.props.rowHeight, nextProps.rowHeight);
             const { sectionIndex, min, max } = this.seekAndUpdate(index);
             const updatedSection = this.updateSection(nextProps, sectionIndex, min, max );
@@ -41,23 +41,24 @@ class HeaderContainer extends PureComponent {
         }
     };
     updateSection = (props, index, min, max) => {
-        const { panelsData, sideColWidth, rowHeight, sideHeaderSize } = props;
+        const { panelsData, sideColWidth, rowHeight, headerRowHeight, sideHeaderSize, isHorizontal, colWidth } = props;
         const targetIndex = index * 3;
         return (
             <HeaderSection
                 key = {`${min}-${max}`}
                 data = {[ panelsData[targetIndex], panelsData[targetIndex+1], panelsData[targetIndex+2] ]}
-                rowHeight = {rowHeight}
-                colWidth = {sideColWidth}
+                rowHeight = {isHorizontal ? headerRowHeight : rowHeight}
+                colWidth = {isHorizontal ? colWidth : sideColWidth}
                 minIndex = { min }
                 maxIndex = { max }
                 width = { sideHeaderSize }
+                isHorizontal = {isHorizontal}
             />
         );
     };
 
     renderAllSections = (props) => {
-        const { panelsData, sideColWidth, rowHeight, sideHeaderSize } = props;
+        const { panelsData, sideColWidth, rowHeight, headerRowHeight, sideHeaderSize, isHorizontal, colWidth } = props;
         const sectionArr = [];
         let indexes = 0;
         for ( let i = 0, len = panelsData.length; i < len; i += 3 ) {
@@ -66,11 +67,12 @@ class HeaderContainer extends PureComponent {
                 <HeaderSection
                     key = {`${indexes}-${nextIndex}`}
                     data = { [ panelsData[i], panelsData[i+1], panelsData[i+2] ] }
-                    rowHeight = {rowHeight}
-                    colWidth = {sideColWidth}
+                    rowHeight = {isHorizontal ? headerRowHeight : rowHeight}
+                    colWidth = {isHorizontal ? colWidth : sideColWidth}
                     minIndex = { indexes }
                     maxIndex = { nextIndex }
                     width = { sideHeaderSize }
+                    isHorizontal = {isHorizontal}
                 />
             );
             indexes += panelsData[i].length;
@@ -79,9 +81,10 @@ class HeaderContainer extends PureComponent {
     }
     render() {
         const { sections } = this.state;
-        const { left } = this.props;
+        const { left, isHorizontal, top, scrollTop, headerRowSize, sideHeaderSize } = this.props;
+        const style = isHorizontal ? { left: sideHeaderSize, top: scrollTop ? scrollTop : 0 } : { left, top: headerRowSize };
         return (
-                <div className="side-table-container" style={{ left }}>
+                <div className={`side-table-container${isHorizontal ? ' horizontal' : ''}`} style={style}>
                     { sections }
                 </div>
         );

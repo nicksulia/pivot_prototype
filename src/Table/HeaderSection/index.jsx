@@ -15,26 +15,28 @@ class HeaderSection extends PureComponent {
         })
     }
     renderRows = (props) => {
-        const { data, colWidth, rowHeight, minIndex, maxIndex } = props;
-        const sectionHeight = rowHeight.slice(minIndex, maxIndex);
+        const { data, colWidth, rowHeight, minIndex, maxIndex, isHorizontal } = props;
+        console.log(colWidth)
         return data.map((row, index) => {
             return (
                 <HeaderRow
                     key = {index}
                     data = {row}
                     level = {index}
-                    width = { colWidth[index] }
-                    height = {sectionHeight}
+                    width = { isHorizontal ? colWidth : colWidth[index] }
+                    height = {isHorizontal ? rowHeight[index] : rowHeight }
                     minIndex = {minIndex}
                     maxIndex = {maxIndex}
+                    isHorizontal = {isHorizontal}
                 />
             );
         })
     };
     render() {
         const { rows } = this.state;
+        const { isHorizontal } = this.props;
         return (
-            <div className="header-section">
+            <div className={`header-section${isHorizontal ? ' section-horizontal' : ''}`}>
                 { rows }
             </div>
         );

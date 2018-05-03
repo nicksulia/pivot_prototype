@@ -15,29 +15,31 @@ class HeaderRow extends PureComponent {
         })
     }
     renderCells = (props) => {
-        const {data, height, width} = props;
+        const {data, height, width, isHorizontal} = props;
+        const sizer = isHorizontal ? width : height;
         let value = data[0];
         const cells = [];
-        let cellHeight = 0;
+        let cellDimension = 0;
         for (let i = 0, len = data.length; i < len; i++) {
             if (data[i] !== null && data[i] !== value) {
                 cells.push (
-                    <HeaderCell key={i} value={value} height={cellHeight}/>
+                    <HeaderCell key={i} value={value} isHorizontal={isHorizontal} width={isHorizontal ? cellDimension : width } height={isHorizontal ? height : cellDimension }/>
                 );
                 value = data[i];
-                cellHeight = height[i];
+                cellDimension = sizer[i];
             } else {
-                cellHeight += height[i];
+                cellDimension += sizer[i];
             }
         }
-        cells.push(<HeaderCell key={'last'} value={value} height={cellHeight}/>);
+        cells.push(<HeaderCell key={'last'} value={value} isHorizontal={isHorizontal} width={isHorizontal ? cellDimension : width } height={isHorizontal ? height : cellDimension }/>);
         return cells;
     };
     render() {
-        const { width } = this.props;
+        const { width, isHorizontal, height } = this.props;
+        const style = isHorizontal ? { height } : { width };
         const { cells } = this.state;
         return (
-            <div className="header-row" style={{ width }}>
+            <div className={`header-row${isHorizontal ? ' row-horizontal' : ''}`} style={style}>
                 { cells }
             </div>
         );

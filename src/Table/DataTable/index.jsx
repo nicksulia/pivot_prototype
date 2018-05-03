@@ -114,9 +114,10 @@ class DataTable extends PureComponent {
 
     render() {
         const { renderedRows } = this.state;
-        const { top, sideHeaderSize } = this.props;
+        const { top, sideHeaderSize, headerRowSize } = this.props;
+        const style = { top: top || headerRowSize, left: sideHeaderSize }
         return (
-                <div className="data-table-container" style={{ top, left: sideHeaderSize }}>
+                <div className="data-table-container" style={style}>
                     { renderedRows }
                 </div>
         );
